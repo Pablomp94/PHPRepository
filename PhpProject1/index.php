@@ -186,12 +186,36 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         }
 
         echo"-------------------------------</br>";
-        
-        
+
         /*
          *           -CLASES-
          * 
+         * Programacion Orientada a Objetos en PHP
+         * 
+         * Clase
+         *  -Plantilla que define: Propiedades y Comportamientos (metodos)
+         *  -Objetos son las creadas a partir de una clase
+         *  
+         * 
          */
+
+
+        echo"<h1>-----------CLASES----------</br></h1>";
+        
+        //Llamamos a la clase Persona del archivo Persona.php
+        require_once 'Persona.php';
+        //Creamos una persona a partir de la clase
+        $personaUno = new Persona();
+        $personaUno->nombre = "David";
+        $personaUno->edad = 20;
+        //Usamos la funcion dentro de la clase de imprimir
+        $personaUno ->imprimirDatos();
+        echo "</br>";
+        $personaDos = new Persona();
+        $personaDos->nombre = "Pablo";
+        $personaDos->edad = "20";
+        $personaDos->imprimirDatos();
+        echo"-------------------------------</br>";
         ?>
     </body>
 </html>
