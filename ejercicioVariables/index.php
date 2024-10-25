@@ -14,9 +14,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         }
     </style>
     <body>
-        
+
         <?php
-        
         $variable = "default";
 
         function crearVariable($nombre) {
@@ -34,7 +33,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         crearVariable($nombre = "Paco");
         crearVariable($nombre = "Manolo");
         crearVariable($nombre = "Juan");
-        
         ?>
     </body>
 </html>
