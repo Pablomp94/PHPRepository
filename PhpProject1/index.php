@@ -201,21 +201,48 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
 
         echo"<h1>-----------CLASES----------</br></h1>";
-        
+
         //Llamamos a la clase Persona del archivo Persona.php
+        //Lo ideal es usar la importacion arriba del todo
         require_once 'Persona.php';
+
         //Creamos una persona a partir de la clase
         $personaUno = new Persona();
         $personaUno->nombre = "David";
         $personaUno->edad = 20;
-        //Usamos la funcion dentro de la clase de imprimir
-        $personaUno ->imprimirDatos();
+        //Usamos la funcion dentro de la clase para imprimir
+        $personaUno->imprimirDatos();
         echo "</br>";
         $personaDos = new Persona();
         $personaDos->nombre = "Pablo";
-        $personaDos->edad = "20";
+        $personaDos->edad = 20;
         $personaDos->imprimirDatos();
         echo"-------------------------------</br>";
+
+        echo"<h1>-----------ARCHIVO TXT----------</br></h1>";
+
+        /*
+         * Hay funcionalidades interesantes y utiles
+         * como puede ser la de abrir un archivo txt y ver su contenido
+         */
+        
+        //Se puede escribir en el fichero desde aqui
+        $archivoEscribir = fopen("ficheroTexto.txt", "w");
+        $texto = "Este texto se ha creado en el txt desde php.";
+        fwrite($archivoEscribir, $texto);
+        fclose($archivoEscribir);
+        
+        //Abrimos el archivo
+        //La r es de modo de lectura
+        $archivo = fopen("ficheroTexto.txt", "r");
+
+        //Ahora para ver el contenido dentro del archivo
+        $contenido = fread($archivo, filesize("ficheroTexto.txt"));
+        //Cerramos el archivo
+        fclose($archivo);
+
+        //Para mostrar el contenido por pantalla
+        echo $contenido;
         ?>
     </body>
 </html>

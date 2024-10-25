@@ -1,0 +1,1 @@
+Este texto se ha creado en el txt desde php.
