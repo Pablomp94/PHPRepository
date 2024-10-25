@@ -22,7 +22,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         function crearVariable($nombre) {
             global $variable;
 
-            if ($nombre != "default") {
+            if ($nombre != $variable) {
                 $variable = $nombre;
                 $$variable = "default";
                 echo "$$variable = " . $$variable . "</br>";
@@ -30,8 +30,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         }
 
         //crearVariable($nombre = "default");
-        
-        
+
         crearVariable($nombre = "Paco");
         crearVariable($nombre = "Manolo");
         crearVariable($nombre = "Juan");
