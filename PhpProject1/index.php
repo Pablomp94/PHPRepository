@@ -186,6 +186,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         }
 
         echo"-------------------------------</br>";
+        
+        
+        /*
+         *           -CLASES-
+         * 
+         */
         ?>
     </body>
 </html>
