@@ -140,6 +140,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * __Method__ -> Nombre del metodo
          * 
          */
+        
+        
+        /*
+         *      -Buenas Practicas-
+         * 
+         * Constantes Magicas
+         *      -Valores que nunca cambiaran
+         *      -Variables en mayusculas
+         */
 
         echo"<h1>-----------Constantes Magicas----------</br></h1>";
         
@@ -177,6 +186,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         }
         
         echo"-------------------------------</br>";
+        
+        
+        
         ?>
     </body>
 </html>
