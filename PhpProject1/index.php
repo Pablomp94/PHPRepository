@@ -117,7 +117,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          */
 
         echo"<h1>-----Creacion de vaiables a partir de otras-----</br></h1>";
-        
+
         //Creacion de vaiables a partir de otras
         $fruta = "manzana";
         $tipo = "fruta";
@@ -140,8 +140,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * __Method__ -> Nombre del metodo
          * 
          */
-        
-        
+
+
         /*
          *      -Buenas Practicas-
          * 
@@ -151,11 +151,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          */
 
         echo"<h1>-----------Constantes Magicas----------</br></h1>";
-        
+
         echo "Estamos en la linea: " . __Line__ . " del archivo: " . __File__;
-        echo"</br>-------------------------------</br>";   
-        
-        
+        echo"</br>-------------------------------</br>";
+
         /*
          *      -Boolean-
          * $algo = True  ---> 1
@@ -165,30 +164,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * $cientifico = 2.5e5 => 2.5x10(elevado a)5 --> 250000
          * 
          */
-        
-        
+
+
         echo"<h1>-----------ARRAYS----------</br></h1>";
-        
-        $array = array(1,2,3);
-        
-        foreach ($array as $valor){
+
+        $array = array(1, 2, 3);
+
+        foreach ($array as $valor) {
             echo $valor . ", ";
         }
+
         echo "</br>Tamaño del array: " . sizeof($array);
-        
+
         echo"</br>-------------------------------</br>";
-        
+
         //Array Asociativo
         $arrayAsociativo = ["nombre" => "Juan", "edad" => 30];
-        
-        foreach($arrayAsociativo as $clave => $valor){
+
+        foreach ($arrayAsociativo as $clave => $valor) {
             echo $clave . " : " . $valor . "</br>";
         }
-        
+
         echo"-------------------------------</br>";
-        
-        
-        
         ?>
     </body>
 </html>
