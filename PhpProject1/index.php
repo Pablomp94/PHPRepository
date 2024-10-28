@@ -212,11 +212,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         $personaUno->edad = 20;
         //Usamos la funcion dentro de la clase para imprimir
         $personaUno->imprimirDatos();
+        
         echo "</br>";
+        
         $personaDos = new Persona();
         $personaDos->nombre = "Pablo";
         $personaDos->edad = 20;
         $personaDos->imprimirDatos();
+        
         echo"-------------------------------</br>";
 
         echo"<h1>-----------ARCHIVO TXT----------</br></h1>";
@@ -237,15 +240,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         //Cerramos el archivo
         fclose($archivo);
 
+        /* //Se puede escribir en el fichero desde aqui
+          $archivoEscribir = fopen("ficheroTexto.txt", "w");
+          $texto = $contenido . " " . " Nuevo texto a añadir.";
+          fwrite($archivoEscribir, $texto);
+          fclose($archivoEscribir); */
+
         //La r es de modo de lectura
         $archivo = fopen("ficheroTexto.txt", "r");
-
-        //Se puede escribir en el fichero desde aqui
-        $archivoEscribir = fopen("ficheroTexto.txt", "w");
-        $texto = $contenido . " " . "Uno";
-        fwrite($archivoEscribir, $texto);
-        fclose($archivoEscribir);
-
         //Ahora para ver el contenido dentro del archivo
         $nuevoContenido = fread($archivo, filesize("ficheroTexto.txt"));
         //Cerramos el archivo
@@ -253,6 +255,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         //Para mostrar el contenido por pantalla
         echo $nuevoContenido;
+
+        
+        echo"<h1>-----------Conversion de Variables----------</br></h1>";
+        
+        /*
+         *  Importante para la gestion de usuarios y base de datos.
+         *  Asi como la validacion de entradas y salidas. 
+         */
+        
+        $numero = 5;
+        $cadena = (string)$numero;
+        //$cadena = "5";
+        
+        //PHP realiza conversiones automaticas cuando es necesario
+        $resultado = "10" + 5;
+        echo $resultado; //15;
+        
+        echo "</br>";
+        //Puedes saber el tipo de una variable 
+        $valor = 42;
+        var_dump($valor); //int(42);
+        
         ?>
     </body>
 </html>
