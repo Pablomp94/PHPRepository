@@ -225,13 +225,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * Hay funcionalidades interesantes y utiles
          * como puede ser la de abrir un archivo txt y ver su contenido
          */
-        
-        //Se puede escribir en el fichero desde aqui
-        $archivoEscribir = fopen("ficheroTexto.txt", "w");
-        $texto = "Este texto se ha creado en el txt desde php.";
-        fwrite($archivoEscribir, $texto);
-        fclose($archivoEscribir);
-        
+
+
+
         //Abrimos el archivo
         //La r es de modo de lectura
         $archivo = fopen("ficheroTexto.txt", "r");
@@ -241,8 +237,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         //Cerramos el archivo
         fclose($archivo);
 
+        //La r es de modo de lectura
+        $archivo = fopen("ficheroTexto.txt", "r");
+
+        //Se puede escribir en el fichero desde aqui
+        $archivoEscribir = fopen("ficheroTexto.txt", "w");
+        $texto = $contenido . " " . "Uno";
+        fwrite($archivoEscribir, $texto);
+        fclose($archivoEscribir);
+
+        //Ahora para ver el contenido dentro del archivo
+        $nuevoContenido = fread($archivo, filesize("ficheroTexto.txt"));
+        //Cerramos el archivo
+        fclose($archivo);
+
         //Para mostrar el contenido por pantalla
-        echo $contenido;
+        echo $nuevoContenido;
         ?>
     </body>
 </html>
