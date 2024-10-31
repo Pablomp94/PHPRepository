@@ -169,9 +169,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         echo"<h1>-----------ARRAYS----------</br></h1>";
 
         $array = array(1, 2, 3);
-
+        
+        echo "Array con foreach:";
+        echo "</br>";
+        
         foreach ($array as $valor) {
             echo $valor . ", ";
+        }
+        
+        echo "</br>";
+        echo "Array con bucle for:";
+        echo "</br>";
+        
+        for($i = 0; $i < sizeof($array); $i++){
+            echo $array[$i] . " ";
         }
 
         echo "</br>Tamaño del array: " . sizeof($array);
