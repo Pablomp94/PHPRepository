@@ -116,7 +116,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * 
          */
 
-        echo"<h1>-----Creacion de vaiables a partir de otras-----</br></h1>";
+        echo"<h1>-----CREACION DE VARIABLES A PARTIR DE OTRAS-----</br></h1>";
 
         //Creacion de vaiables a partir de otras
         $fruta = "manzana";
@@ -150,7 +150,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          *      -Variables en mayusculas
          */
 
-        echo"<h1>-----------Constantes Magicas----------</br></h1>";
+        echo"<h1>-----------CONSTANTES MAGICAS----------</br></h1>";
 
         echo "Estamos en la linea: " . __Line__ . " del archivo: " . __File__;
         echo"</br>-------------------------------</br>";
@@ -191,11 +191,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         //Array Asociativo
         $arrayAsociativo = ["nombre" => "Juan", "edad" => 30];
-
+        
+        echo $arrayAsociativo["nombre"];
+        echo "</br>";
         foreach ($arrayAsociativo as $clave => $valor) {
             echo $clave . " : " . $valor . "</br>";
         }
 
+        
         echo"-------------------------------</br>";
 
         /*
@@ -268,7 +271,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         echo $nuevoContenido;
 
         
-        echo"<h1>-----------Conversion de Variables----------</br></h1>";
+        echo"<h1>-----------CONVERSION DE VARIABLES----------</br></h1>";
         
         /*
          *  Importante para la gestion de usuarios y base de datos.
@@ -287,6 +290,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         //Puedes saber el tipo de una variable 
         $valor = 42;
         var_dump($valor); //int(42);
+        
+        
+        echo"<h1>-----------------BUCLES-----------------</br></h1>";
+        
+        echo "Saltarte una posicion en el bucle for: </br>";
+        
+        for($i = 0; $i<=10; $i++){
+            
+            if($i == 5){
+                continue;
+            }
+            
+            echo $i . " ";
+        }
+        
+        echo "</br>";
         
         ?>
     </body>
