@@ -9,20 +9,61 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         <title></title>
     </head>
     <style>
-        table, tr, td, th{
-            border: 2px, black, solid;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        /* Contenedor del calendario */
+        .calendario {
+            display: grid;
+            gap: 80px;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            width: 100%;
+            max-width: 100%;
+            margin: 20px;
+        }
+
+        /* Estilos de cada tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Encabezado del mes */
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        /* Estilo de celdas de días */
+        td, th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
             font-size: 14px;
         }
 
-        table{
-            position:relative;
-            margin: 2px;
-            top:2px;
-            left:2px;
-            float:left;
-        }
-
-        .nuevo{
+        /* Fines de semana en rojo */
+        .nuevo {
             color: red;
         }
 
@@ -33,6 +74,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         <?php
 
         function crearCalendario() {
+            
+            echo "<div class = calendario>";
+
             $meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             $diaMeses = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
             $semana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
@@ -53,7 +97,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
                 echo "<tr>";
 
                 $blanco = 0;
-                $atras = $pos;
 
                 if ($meses[$i] != "Enero") {
                     $ultimoNumero = $diaMeses[$i - 1] - ($pos - 1);
@@ -85,7 +128,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
 
                 echo "</table>";
+                
             }
+            echo "</div class = calendario>";
         }
 
         crearCalendario();
