@@ -30,7 +30,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         .calendario {
             display: grid;
             gap: 80px;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
             width: 100%;
             max-width: 100%;
             margin: 20px;
@@ -59,7 +59,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
-            font-size: 14px;
+            font-size: 100%;
+        }
+        
+        td:hover{
+            font-size: 150%;
+            cursor: pointer;
         }
 
         /* Fines de semana en rojo */
@@ -67,6 +72,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             color: red;
         }
 
+        .diaActual{
+            font-size: 200%;
+            color: blue;
+        }
 
 
     </style>
@@ -117,10 +126,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
                     if (($x != 0) && ((($x + $blanco) - 1) % 7 == 0)) {
                         echo"</tr>";
                         echo "<tr>";
-                        echo "<td>" . $x . "</td>";
+                        ponerDias($x, $i);
                         $pos = 0;
                     } else {
-                        echo "<td>" . $x . "</td>";
+                        ponerDias($x, $i);
                     }
                     $x++;
                     $pos++;
@@ -134,6 +143,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         }
 
         crearCalendario();
+        
+        
+        //Funcion para poner los dias y comprueba tambien el dia en el que estamos
+        
+        
+        function ponerDias($dia, $diaMes){
+            //Si es el dia, se marca en el calendario en grande y azul
+            if((($diaMes + 1) == date("n"))&& ($dia == date("j"))){
+                echo "<td class = diaActual>" . $dia . "</td>";
+            }else{
+                echo "<td>" . $dia . "</td>";
+            }
+        }
+        
         ?>
     </body>
 </html>
