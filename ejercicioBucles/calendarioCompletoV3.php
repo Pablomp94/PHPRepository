@@ -61,7 +61,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             text-align: center;
             font-size: 100%;
         }
-        
+
         td:hover{
             font-size: 150%;
             cursor: pointer;
@@ -69,21 +69,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         /* Fines de semana en rojo */
         .nuevo {
+            color: grey;
+        }
+
+
+
+        .festivo{
             color: red;
         }
 
-        .diaActual{
+        #diaActual{
             font-size: 200%;
             color: blue;
         }
-
 
     </style>
     <body>
         <?php
 
         function crearCalendario() {
-            
+
             echo "<div class = calendario>";
 
             $meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -91,10 +96,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             $semana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
 
             $pos = 0;
-            for ($i = 0; $i < sizeof($meses); $i++) {
+            for ($i = 0;
+                    $i < sizeof($meses);
+                    $i++) {
                 echo "<table>";
                 echo "<tr>";
-                echo "<th>" . $meses[$i] . "</th>";
+                echo "<th colspan=7>" . $meses[$i] . "</th>";
                 echo "</tr>";
                 $x = 1;
 
@@ -123,40 +130,49 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
                 while ($x <= $diaMeses[$i]) {
 
+
                     if (($x != 0) && ((($x + $blanco) - 1) % 7 == 0)) {
                         echo"</tr>";
                         echo "<tr>";
-                        ponerDias($x, $i);
+                        ponerDias($x, $i, $blanco);
                         $pos = 0;
                     } else {
-                        ponerDias($x, $i);
+                        ponerDias($x, $i, $blanco);
                     }
+
                     $x++;
                     $pos++;
                 }
 
+                ponerAño();
 
                 echo "</table>";
-                
             }
             echo "</div class = calendario>";
         }
 
         crearCalendario();
-        
-        
+
         //Funcion para poner los dias y comprueba tambien el dia en el que estamos
-        
-        
-        function ponerDias($dia, $diaMes){
+        //Si es domingo lo pone como festivo en rojo
+        function ponerDias($dia, $numMes, $blanco) {
             //Si es el dia, se marca en el calendario en grande y azul
-            if((($diaMes + 1) == date("n"))&& ($dia == date("j"))){
-                echo "<td class = diaActual>" . $dia . "</td>";
-            }else{
-                echo "<td>" . $dia . "</td>";
+            if ((($numMes + 1) == date("n")) && ($dia == date("j"))) {
+                echo "<td id = diaActual>" . $dia . "</td>";
+            } else {
+                if ((($dia + 1) != 0) && (((($dia + 1) + $blanco) - 1) % 7 == 0)) {
+                    echo "<td class = festivo>" . $dia . "</td>";
+                }else{
+                    echo "<td>" . $dia . "</td>";
+                }
             }
         }
-        
+
+        function ponerAño() {
+            echo "<tr>";
+            echo "<th colspan=7>AÑO: " . date("Y") . "</th>";
+            echo "</tr>";
+        }
         ?>
     </body>
 </html>
