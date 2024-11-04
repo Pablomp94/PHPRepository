@@ -87,6 +87,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
     <body>
         <?php
 
+        //Para hacer este programa he usado el date(), el cual es usado para sacar informacion horaria del usuario
+        
         function crearCalendario() {
 
             echo "<div class = calendario>";
@@ -96,16 +98,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             $semana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
 
             $pos = 0;
-            for ($i = 0;
-                    $i < sizeof($meses);
-                    $i++) {
+            for ($i = 0; $i < sizeof($meses); $i++) {
                 echo "<table>";
                 echo "<tr>";
                 echo "<th colspan=7>" . $meses[$i] . "</th>";
                 echo "</tr>";
+                //x es el valor de los dias, empezando como dia inicial 1
                 $x = 1;
 
                 echo "<tr>";
+                //Recorro los dias de la semana y los muestro
                 foreach ($semana as $sem) {
                     echo "<th>" . $sem . " " . "</th>";
                 }
@@ -114,12 +116,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
                 $blanco = 0;
 
+                //Si el mes en el que estamos no es enero, me guardo en una variable el ultimo dia del mes anterior
                 if ($meses[$i] != "Enero") {
                     $ultimoNumero = $diaMeses[$i - 1] - ($pos - 1);
                 } else {
                     $ultimoNumero = null;
                 }
 
+                //Mientras que mi variable blanco con valor 0 sea menor a la posicion del ultimo numero del mes anterior voy mostrando dichos dias
                 while ($blanco < $pos) {
                     echo "<td class=nuevo>" . $ultimoNumero . "</td>";
                     $ultimoNumero++;
@@ -128,18 +132,39 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
                 $pos = 0;
 
+                //Hago un bucle para ir mostrando los dias del mes actual sin pasarse del dia que tiene asociado dicho mes
                 while ($x <= $diaMeses[$i]) {
 
+                    //Si el dia actual mas los espacios que se le sume al añadirle los dias del mes anterior, menos uno da de modulo de 7 un 0 se crea una nueva fila
+                    //Como explicacion del porque se calcula quitandole uno, es porque lo que queremos son columnas de 7, 
+                    //por lo que en la posicion 8 queremos estar ya abajo en la nueva fila, si no se pone el menos 1 estariamos creando 
+                    //columnas de 6, ya que en la 7º posicion se crearia la fila
+                    
+                    //Ahora que lo estoy comentando se podría poner sin el menos 1 mostrando en pantalla el dia actual y luego crear la fila
+                    
+                    //ejemplo:
+                    
+                    /* if (((($x + $blanco)) % 7 == 0)) {
+                     * 
+                     * ponerDias($x, $i, $blanco);
+                      echo"</tr>";
+                      echo "<tr>";
+                      //Si creo una fila la posicion vuelve a 0
+                      $pos = 0;
+                      } else { 
 
-                    if (($x != 0) && ((($x + $blanco) - 1) % 7 == 0)) {
+                     *                      */
+                    
+                    if (((($x + $blanco) - 1) % 7 == 0)) {
                         echo"</tr>";
                         echo "<tr>";
                         ponerDias($x, $i, $blanco);
+                        //Si creo una columna la posicion vuelve a 0
                         $pos = 0;
                     } else {
                         ponerDias($x, $i, $blanco);
                     }
-
+                    //Voy sumando los dias y la posicion en la que estoy para luego mostrar en el siguiente mes los ultimos dias de este mes
                     $x++;
                     $pos++;
                 }
@@ -160,14 +185,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             if ((($numMes + 1) == date("n")) && ($dia == date("j"))) {
                 echo "<td id = diaActual>" . $dia . "</td>";
             } else {
-                if ((($dia + 1) != 0) && (((($dia + 1) + $blanco) - 1) % 7 == 0)) {
+                //Si no se cumple la condicion anterior
+                //Si el modulo del dia mas los numeros añadidos del mes anterior es 0, va a ser domingo
+                //Ya que esta en la 7º columna
+                if ((($dia) + $blanco) % 7 == 0){
                     echo "<td class = festivo>" . $dia . "</td>";
-                }else{
+                } else {
+                    //Si no se cumple ninguna de las dos condiciones
+                    //Se muestra el dia sin nada especial
                     echo "<td>" . $dia . "</td>";
                 }
             }
         }
-
+        //Funcion para poner el año actual
         function ponerAño() {
             echo "<tr>";
             echo "<th colspan=7>AÑO: " . date("Y") . "</th>";
