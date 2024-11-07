@@ -337,33 +337,107 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         //fuera de la funcion
 
         function inc(&$number) {
-            $number++;//69 + 1
+            $number++; //69 + 1
         }
 
         $number = 69;
         inc($number);
 
         echo $number; //70
-        
+
         echo "</br>";
-        
+
         echo"<h1>-----------------Funciones-----------------</br></h1>";
-        
-        function saludar($nombre = "Invitado"){
+
+        function saludar($nombre = "Invitado") {
             echo "Hola " . $nombre;
         }
-        
+
         saludar();
         echo "</br>";
         saludar("dadadas");
         echo "</br>";
-        
+
         //Suma todos los numeros que se le pase a la funcion
-        function sumarTodos(...$numeros){
+        function sumarTodos(...$numeros) {
             return array_sum($numeros);
         }
+
+        echo sumarTodos(1, 2, 3);
+
+        echo"<h1>-----------------Funciones Recursivas, ejemplo factorial-----------------</br></h1>";
+
+        function factorial($n) {
+            if ($n == 1) {
+                return 1;
+            }
+
+            if ($n == 0) {
+                return 0;
+            }
+
+            return $n * factorial($n - 1);
+        }
+
+        echo factorial(5);
+
+        echo"<h1>-----------------STRINGS-----------------</br></h1>";
+
+        /*
+         *                          HEREDOC         NOWDOC 
+         *  Interpreta variables       SI             NO
+         *  Secuencia de escape        SI             NO    
+         *  DELIMITADOR             <<<IDEN        <<<'IDEN'
+         * 
+         */
+
+        //HEREDOC
+
+        $nombre = "Mundo";
+
+        $saludo = <<<EOT
         
-        echo sumarTodos(1,2,3);
+                HOLA </br>
+                dsadasda
+                -----$nombre----
+        EOT;
+
+        echo $saludo;
+
+        echo "</br>";
+
+        //NOWDOC
+
+        $saludo2 = <<<'EOT'
+                HOLA </br>
+                dsadasda
+                -----$nombre----
+        EOT;
+
+        echo $saludo2;
+
+        echo "</br>";
+
+        echo"<h1>-----------------Funciones Strings-----------------</br></h1>";
+
+        $frase = "Hola Mundo @gmail.com</br>";
+
+        echo $frase;
+
+        echo "Numero de caracteres: " . strlen($frase);
+        echo "</br>";
+        echo "Numero de palabras: " . str_word_count($frase) . "</br>";
+        echo "Pon todo en mayusculas: " . strtoupper($frase);
+        echo "Pon todo en minusculas: " . strtolower($frase);
+        echo "Reemplazar texto: " . str_replace("Mundo", "Pepito", $frase);
+        echo "Extraer una parte del string: " . substr($frase, 0, 4) . "</br>";
+
+        echo "Sacar del arroba hasta el final: ";
+        $numArroba = strpos($frase, "@");
+        $longitud = strlen($frase);
+        echo "</br>";
+        echo substr($frase, $numArroba, ($longitud - $numArroba));
+        
         
         
         ?>
