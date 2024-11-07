@@ -169,19 +169,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         echo"<h1>-----------ARRAYS----------</br></h1>";
 
         $array = array(1, 2, 3);
-        
+
         echo "Array con foreach:";
         echo "</br>";
-        
+
         foreach ($array as $valor) {
             echo $valor . ", ";
         }
-        
+
         echo "</br>";
         echo "Array con bucle for:";
         echo "</br>";
-        
-        for($i = 0; $i < sizeof($array); $i++){
+
+        for ($i = 0; $i < sizeof($array); $i++) {
             echo $array[$i] . " ";
         }
 
@@ -191,14 +191,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         //Array Asociativo
         $arrayAsociativo = ["nombre" => "Juan", "edad" => 30];
-        
+
         echo $arrayAsociativo["nombre"];
         echo "</br>";
         foreach ($arrayAsociativo as $clave => $valor) {
             echo $clave . " : " . $valor . "</br>";
         }
 
-        
+
         echo"-------------------------------</br>";
 
         /*
@@ -226,14 +226,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         $personaUno->edad = 20;
         //Usamos la funcion dentro de la clase para imprimir
         $personaUno->imprimirDatos();
-        
+
         echo "</br>";
-        
+
         $personaDos = new Persona();
         $personaDos->nombre = "Pablo";
         $personaDos->edad = 20;
         $personaDos->imprimirDatos();
-        
+
         echo"-------------------------------</br>";
 
         echo"<h1>-----------ARCHIVO TXT----------</br></h1>";
@@ -270,42 +270,101 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         //Para mostrar el contenido por pantalla
         echo $nuevoContenido;
 
-        
         echo"<h1>-----------CONVERSION DE VARIABLES----------</br></h1>";
-        
+
         /*
          *  Importante para la gestion de usuarios y base de datos.
          *  Asi como la validacion de entradas y salidas. 
          */
-        
+
         $numero = 5;
-        $cadena = (string)$numero;
+        $cadena = (string) $numero;
         //$cadena = "5";
-        
         //PHP realiza conversiones automaticas cuando es necesario
         $resultado = "10" + 5;
         echo $resultado; //15;
-        
+
         echo "</br>";
         //Puedes saber el tipo de una variable 
         $valor = 42;
         var_dump($valor); //int(42);
-        
-        
+
+
         echo"<h1>-----------------BUCLES-----------------</br></h1>";
-        
+
         echo "Saltarte una posicion en el bucle for: </br>";
-        
-        for($i = 0; $i<=10; $i++){
-            
-            if($i == 5){
+
+        for ($i = 0; $i <= 10; $i++) {
+
+            if ($i == 5) {
                 continue;
             }
-            
+
             echo $i . " ";
         }
+
+        echo "</br>";
+
+        echo"<h1>-----------------PROGRAMACION MODULAR-----------------</br></h1>";
+
+        /*
+         * Programacion Modular:
+         *      Programacion a base de funciones
+         *      Se pueden poner funciones dentro de otras
+         *      Parametros de una funcion: Son las variables de dentro de la funcion
+         *      Argumentos de una funcion: Los parametros que le pasas de fuera a la funcion
+         *      
+         */
+
+        echo "Funcionamiento variables en funciones </br>";
+
+        function increment($num) {
+            $num++;
+            echo $num . "</br>";
+            return $num;
+        }
+
+        $num = 5;
+        echo $num . "</br>"; //5
+        increment($num); //6
+        echo $num . "</br>"; //5
+        echo increment($num); //6 del echo y 6 del return al hacerle el echo
+
+
+        echo"<h1>-----------------Variables por referencia-----------------</br></h1>";
+
+        //Llamando a la variable con & los cambios en la variable se guarda
+        //fuera de la funcion
+
+        function inc(&$number) {
+            $number++;//69 + 1
+        }
+
+        $number = 69;
+        inc($number);
+
+        echo $number; //70
         
         echo "</br>";
+        
+        echo"<h1>-----------------Funciones-----------------</br></h1>";
+        
+        function saludar($nombre = "Invitado"){
+            echo "Hola " . $nombre;
+        }
+        
+        saludar();
+        echo "</br>";
+        saludar("dadadas");
+        echo "</br>";
+        
+        //Suma todos los numeros que se le pase a la funcion
+        function sumarTodos(...$numeros){
+            return array_sum($numeros);
+        }
+        
+        echo sumarTodos(1,2,3);
+        
         
         ?>
     </body>
