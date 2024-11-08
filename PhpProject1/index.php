@@ -438,7 +438,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         echo "</br>";
         echo substr($frase, $numArroba, ($longitud - $numArroba));
         
+        echo "Dividir un texto en un array: </br>";
         
+        $frase = "manzana,pera,uva";
+        
+        //Separar string en array
+        print_r(explode(",", $frase));
+        echo "</br>";
+        
+        //Juntar array en string
+        $arr = explode(",", $frase);
+        echo implode(" , ", $arr);
+        
+        echo "</br>";
+        
+        //Eliminar espacios en blanco
+        $fraseEspacios = "     Hola Mundo     ";
+        
+        echo trim($fraseEspacios);//Quitar espacios en blanco
+        
+        echo "</br>Repetir strings: ";
+        $frase = "Paco";
+        echo str_repeat($frase, 3);
         
         ?>
     </body>
