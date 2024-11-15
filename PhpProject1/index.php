@@ -198,7 +198,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             echo $clave . " : " . $valor . "</br>";
         }
 
-
+        echo "</br>";
+        
+        $empleados=[
+            ["nombre" => "Juan", "edad" => 30, "departamento" => "IT"],
+            ["nombre" => "María", "edad" => 28, "departamento" => "Marketing"],
+            ["nombre" => "Carlos", "edad" => 35, "departamento" => "Ventas"]
+        ];
+        
+        echo $empleados[1]["edad"];
+        
+        //CON array_push() AÑADES VALORES A UN ARRAY
+        //CON array_pop() ELIMINO LA ULTIMA POSICION DE UN ARRAY
+        
+        echo "</br>";
         echo"-------------------------------</br>";
 
         /*
