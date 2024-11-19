@@ -9,12 +9,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         <title></title>
     </head>
     <style>
-        
-       
+
+
     </style>
     <body>
         <?php
-         
         /*
          * FORMULARIOS HTML: GET Y POST
          * 
@@ -49,11 +48,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * HTTP puerto 80 y HTTPS puerto 443
          * 
          */
-       
+        ?>
+
+        <form action="paginasDinamicas.php" method="POST">
+            Name: <input type="text" name="name"></br>
+            E-mail:  <input type="text" name="email"></br>
+            <input type="submit">
+        </form>
+
+        <?php
         
-        
-        
-        
+        //Si llamamos al mismo fichero nos dara warning mientras los valores no existan
+        echo "Hola: " . $_POST["name"] . "</br>";
+        echo "Tu email es: " . $_POST["email"] . "</br>";
         
         
         ?>
