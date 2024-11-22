@@ -474,6 +474,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         $frase = "Paco";
         echo str_repeat($frase, 3);
         
+        echo"<h1>-----------------Funciones utiles arrays-----------------</br></h1>";
+        
+        
+        /*
+         * 
+         * empty($array); //Comprueba si esta vacio
+         * isset($array[0]); //Comprueba si existe el indice o cualquier variable que le pongamos
+         * array_key_exists("clave", $array); //Comprueba si existe la clave de un array asociativo
+         * array_push($array,4); // Añade al final
+         * array_pop($array); //Elimina el ultimo elemento del array y te lo devuelve
+         * 
+         */
+        
         ?>
     </body>
 </html>

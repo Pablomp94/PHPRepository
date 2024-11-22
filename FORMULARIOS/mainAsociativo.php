@@ -49,7 +49,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         <!--Si pones en el action PHP_SELF puedes recojer los datos en el mismo archivo-->
         
-        <form action="formulario.php" method="POST">
+        <form action="formularioAsociativo.php" method="POST">
             Nombre <input type="text" name="name"></br>
             E-mail  <input type="text" name="email"></br>
             <input id="sub" type="submit">
