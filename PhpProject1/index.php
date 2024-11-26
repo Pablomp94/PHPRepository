@@ -486,7 +486,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * array_pop($array); //Elimina el ultimo elemento del array y te lo devuelve
          * 
          */
-        
+
+         /*
+         // OPERADOR TERNARIO
+        // Si el id existe lo combierte a int y si no id vale 0
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        // Es lo mismo que
+        if (isset($_GET['id'])){
+            $id = (int) $_GET['id'];
+        }else{
+            $id = 0;
+        }
+             */
+
         ?>
     </body>
 </html>
