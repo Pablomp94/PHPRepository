@@ -22,13 +22,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
     <body>
 
         <?php
+        
         $arrayDatos = [$_POST["name"], $_POST["email"]];
 
         echo "Hola: " . $arrayDatos[0] . "</br>";
-        echo "Tu email es: " . $arrayDatos[1] . "</br>";
+        
 
-        sacarDatos($arrayDatos[1]);
-
+        if(empty($arrayDatos[1]) == True){
+            echo "No has introducido un email";
+        }else{
+            echo "Tu email es: " . $arrayDatos[1] . "</br>";
+            sacarDatos($arrayDatos[1]);
+        }
+        
+        
         function sacarDatos($email) {
             $arrayEmail = str_split($email);
 

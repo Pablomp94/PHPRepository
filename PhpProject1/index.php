@@ -498,7 +498,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             $id = 0;
         }
              */
+        
+        
+        /*
+         * isset(); --> Para saber si el usuario ha pasado el formulario.
+         * 
+         * empty(); --> Chequea si la variable esta vacia.
+         */
 
+        
         ?>
     </body>
 </html>
