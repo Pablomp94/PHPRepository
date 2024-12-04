@@ -98,16 +98,44 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             
             $tamanyo = $archivo["size"]; //Muestra el tamaño del fichero en bytes
             echo 'Tu fichero ocupa: ' . $tamanyo . " bytes";
+            $tam = ($tamanyo/1048576);
             echo "</br>";
-            echo "Tu fichero ocupa: " . number_format(($tamanyo/1048576), 3) . " Megabytes";
+            echo "Tu fichero ocupa: " . number_format(($tam), 3) . " Megabytes";
             
             echo"</br>";
             
-            //Subir el archivo a una carpeta
+            
+            //Subir el archivo a una carpeta si no hay ningun error
+            /*
             if($error == 0){
                 $destino = "uploads/" . $nombre; 
                 move_uploaded_file($tmp_name, $destino);
+            }*/
+            
+            //Ejercicio1: Si el archivo ocupa mas de 5mb, 
+            //mostrar mensaje de error y no subir el archivo.
+            /*
+            if(($error == 0) && ($tam <= 5)){
+                $destino = "uploads/" . $nombre; 
+                move_uploaded_file($tmp_name, $destino);
+            }else{
+                echo "Error al subir el archivo debido a que el tamaño es mayor a 5 megabytes";
             }
+            */
+            
+            //Ejercicio2: Solo subir el archivo si estas dentro de las 14h
+            
+            $hora = date("G");
+            if(($hora <= 14) && $error == 0){
+                 $destino = "uploads/" . $nombre; 
+                move_uploaded_file($tmp_name, $destino);
+                echo "Subido";
+            }else{
+                echo "Error al subir el archivo debido a fuera de hora";
+            }
+            
+            
+            //Ejercicio3: 
             
         }
         
