@@ -48,6 +48,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             cursor: pointer;
         }
 
+        
+        .error{
+            color: red;
+            font-weight: bold;
+        }
+        
 
     </style>
     <body>
