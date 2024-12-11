@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edit this template
@@ -121,6 +121,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
                  <input type="radio" name="gender" value="female">Other
                  </br>
 
+                 Kilos: <select name="tomate" id="precios">
+                <option value="0">0 Kg</option>
+                <option value="1">1 Kg</option>
+                <option value="2">2 Kg</option>
+                <option value="3">3 Kg</option>
+            </select> TOMATE 3$/KILO
                 <button id="sub" type="submit" name="submit">Send</button>
             </form>
         </div>
