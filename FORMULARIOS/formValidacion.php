@@ -1,4 +1,7 @@
-    <!DOCTYPE html>
+
+
+
+<!DOCTYPE html>
 <!--
 Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
 Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edit this template
@@ -11,7 +14,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
     <style>
         *{
             font-size: 24px;
-
         }
 
         h1{
@@ -117,8 +119,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
                 Comment: <textarea type="text" name="comment" rows="5" cols="40"></textarea></br>
                 <span class="error"><?php echo $genderErr ?></span></br>
                 Gender: <input type="radio" name="gender" value="female">Female
-                 <input type="radio" name="gender" value="female">Male
-                 <input type="radio" name="gender" value="female">Other
+                 <input type="radio" name="gender" value="male">Male
+                 <input type="radio" name="gender" value="other">Other
                  </br>
 
                  Kilos: <select name="tomate" id="precios">
