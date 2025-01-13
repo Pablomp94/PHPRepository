@@ -9,6 +9,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         <title></title>
     </head>
     <body>
+        
+        
+        <div>
+        
+        <h1>INTRODUCE TUS DATOS</h1>
+
+        <!--Si pones en el action PHP_SELF puedes recojer los datos en el mismo archivo-->
+        
+        <form action="PHP_SELF" method="POST">
+            Nombre <input type="text" name="name"></br>
+            E-mail  <input type="text" name="email"></br>
+            <input id="sub" type="submit">
+        </form>
+        </div>
+        
+        
+        
+        
+        
+        
         <?php
         
         /*
@@ -39,15 +59,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          */
         
         
-        setcookie("usuario", "Juan", (time() + 3600), "/");
-        setcookie("correo", "juan@gmail.com", (time() + 3600), "/");
+        
+        
+        
+        
+        if (isset($_FILES["name"])) {
+        
+        
+        setcookie("usuario", $_FILES["name"], (time() + 3600), "/");
+        setcookie("correo", $_FILES["email"], (time() + 3600), "/");
         
         
         echo "Bienvenido: " . $_COOKIE["usuario"] . "</br>";
         
         echo "Correo: " . $_COOKIE["correo"];
         
-        
+        }
         
         ?>
     </body>
