@@ -202,7 +202,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
         //Si es domingo lo pone como festivo en rojo
         function ponerDias($dia, $numMes, $blanco) {
             //Si es el dia, se marca en el calendario en grande y azul
-            if ((($numMes + 1) == $mesAct) && ($dia == $diaAct))) {
+            if ((($numMes + 1) == $mesAct) && ($dia == $diaAct)) {
                 echo "<td id = diaActual>" . $dia . "</td>";
             } else {
                 //Si no se cumple la condicion anterior
