@@ -16,6 +16,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         *{
             font-size: 30px;
+            margin: auto;
+            text-align: center;
+            background-color: lightgrey;
+        }
+        
+        input{
+            margin-right: 20px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        
+        
+        
+        h1{
+            border: solid 3px black;
+            margin-bottom: 15px; 
         }
 
     </style>
@@ -239,7 +255,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
                 // Código a ejecutar si todas las variables son iguales a 1
                 //Hago un bucle para recorrer todos las cookies y mostrarlas:
                 for($x = 0; $x < sizeof($nombresCookies); $x++){
-                    echo "<h1> " . $description[$x] . ": " . $_COOKIE($nombresCookies[$x]) . "</h1>";
+                    echo "<h1> " . $description[$x] . ": " . $_COOKIE[$nombresCookies[$x]] . "</h1>";
                 }
             }
         }
