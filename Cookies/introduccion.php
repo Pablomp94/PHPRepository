@@ -36,6 +36,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          *      $_COOKIE => Array superglobal que contiene todas las cookies 
          *                  enviadas al navegador.
          * 
+         * 
          */
         
         

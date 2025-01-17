@@ -52,9 +52,42 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          * 
          *      session_destroy() => Destruye la sesion.
          * 
+         *      session_unset() => Elimina todas las variables de la sesion,
+         *                         pero no destruye la sesion actual.
+         * 
+         *      $_SESSION => Array asociativo que contiene todas 
+         *                   las variables de la sesion.
+         * 
+         *      session_set_Cookie_params() => Configuran la duracion de una sesion.
+         * 
+         * 
+         * -Ventajas de las sesiones frente a las cookies
+         * 
+         *      Seguridad: Datos en el servidor, las cookies se pueden interceptar.
+         * 
+         *      Flexibilidad: Las sesiones aceptan datos de cualquier tipo,
+         *                    las cookies estan limitadas a cadenas de texto.
+         * 
+         *      Control: Se puede controlar el tiempo de vida de una sesion
+         *               de manera mas precisa.
+         * 
+         * 
+         * -Sessions vs Cookies
+         * 
+         *      Almacenamiento => SERVIDOR | NAVEGADOR
+         * 
+         *      SEGURIDAD => +SEGURAS | -SEGURAS
+         * 
+         *      TAMAÑO => +TAMAÑO | LIMITADAS
+         * 
+         *      DURACION => SESION | PERSISTENTES O DE SESION
+         * 
+         *      USOS TIPICOS => GESTION DE ESTADO DE USUARIO O AUTENTICACION | PERSONALIZACION O SEGUIMIENTO
+         * 
+         *     
          * 
          */
-        
+         
         
         
         
