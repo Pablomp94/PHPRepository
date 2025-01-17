@@ -50,7 +50,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
          *      
          *      session_id() => Devuelve o establece el ID de sesion actual.
          * 
-         *      sesion_destroy() => Destruye la sesion.
+         *      session_destroy() => Destruye la sesion.
          * 
          * 
          */
