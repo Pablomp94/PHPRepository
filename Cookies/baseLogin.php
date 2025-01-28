@@ -1,21 +1,21 @@
-<<?php
-// Iniciamos la sesión - necesario para mantener datos entre páginas
-session_start();
-
-// Array asociativo que simula una base de datos de usuarios
-// Las contraseñas están hasheadas por seguridad usando password_hash()
-$usuarios = [
-    'admin' => password_hash('admin123', PASSWORD_DEFAULT), // Credenciales de administrador
-    'user'  => password_hash('user123', PASSWORD_DEFAULT)   // Credenciales de usuario normal
-];
+<?php
 
 // Verificamos si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    
+    
+    //Te guarda en un array el contenido del texto por lineas
+    $lineas = file("baseDatos.txt");
+    
+    //Linea 1 de usuario
+    $usuarioBase = $lineas[0];
+    //Linea 2 de contraseña
+    $contraseñaBase = $lineas[1];
 
     // Validamos las credenciales
-    if (isset($usuarios[$username]) && password_verify($password, $usuarios[$username])) {
+    if (($username == $usuarioBase) && (password_verify($password, $contraseñaBase))) {
         // Mostramos mensaje de bienvenida personalizado
         echo "<h2>Bienvenido/a " . htmlspecialchars($username) . "</h2>";
 
