@@ -14,7 +14,7 @@
 
 $flag = 0;
 $texto = "";
-$textoCifrado ="";
+//$textoCifrado ="";
 
 for ($a = 23; $a <= (25); $a++) {
     for ($m = 1; $m <= (12); $m++) {
@@ -37,9 +37,9 @@ for ($a = 23; $a <= (25); $a++) {
                 }
                 echo $a . "</br>";
                 $texto = $texto . $a;
-                $textoCifrado = $textoCifrado . password_hash($texto, PASSWORD_DEFAULT);
+                //$textoCifrado = $textoCifrado . password_hash($texto, PASSWORD_DEFAULT);
                 $texto = $texto . "\n";
-                $textoCifrado = $textoCifrado . "\n";
+                //$textoCifrado = $textoCifrado . "\n";
                 if (($a == 25) && ($d == 30) && ($m == 1)) {
                     $flag = 1;
                 }
@@ -51,7 +51,7 @@ for ($a = 23; $a <= (25); $a++) {
         //Guardamos las credenciales en el archivo de texto
         $archivo = fopen("ejercicioAños.txt", "w");
         //fwrite($archivo, $texto);
-        fwrite($archivo, $textoCifrado);
+        fwrite($archivo, $texto);
         fclose($archivo);
 
         
@@ -62,14 +62,17 @@ for ($a = 23; $a <= (25); $a++) {
         $flagFecha = 0;
         
         
-        $fechaResolver = ("0" . 2 . "/" . 10 . "/" . 24 . "\n");
+        $fechaResolver = ("0" . 6 . "/0" . 1 . "/" . 24 . "\n");
         
-            
+        $fecharesHash = password_hash($fechaResolver, PASSWORD_DEFAULT);
+        
+        
         
         foreach ($lineas as $linea) {   
+            
             if($flagFecha == 0){
-                if(password_verify($fechaResolver, $linea)){
-                    echo "FECHA ENCONTRADA";
+                if(password_verify($linea, $fecharesHash)){
+                    echo "LA FECHA ". $fechaResolver  ." HA SIDO ENCONTRADA";
                     $flagFecha = 1;
                 }
             }

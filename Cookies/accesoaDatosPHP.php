@@ -94,7 +94,44 @@
  *      ("SELECT * FROM usuarios;")
  *      ("SELECT nombre FROM usuarios WHERE id = 1;")     
  * 
- *      Update => 
+ *      
+ * 
+ *    CRUD
+ *      
+ *      CREATE
+ * 
+ *      function crearUsuario($nombre, $email){
+ * 
+ *          $sql = "INSERT INTO usuarios nombre, email VALUES (?, ?)";
+ *          
+ *      }
+ *      
+ * 
+ *      READ
+ * 
+ *      function obtenerUsuario($id){
+ *          
+ *          $sql = "SELECT * FROM usuarios WHERE id = ?";
+ *  
+ *      }
+ * 
+ * 
+ *      UPDATE
+ * 
+ *      function actualizarUsuario($email, $id){
+ * 
+ *          $sql = "UPDATE usuarios SET email = ? WHERE id = ?";
+ * 
+ *      }
+ * 
+ * 
+ *      DELETE
+ * 
+ *      function eliminarUsuario($id){
+ * 
+ *          $sql = "DELETE FROM usuarios WHERE id = ?";
+ * 
+ *      }
  * 
  * 
  */
