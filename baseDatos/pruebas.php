@@ -36,7 +36,7 @@
             VALUES('Pepe', 'asddddsd', 'fasjdsa@gmail.com')";*/
     
     
-    $sql = "SELECT id, firstname, lastname, reg_date FROM myguests ORDER BY lastname";
+    $sql = "SELECT * FROM myguests ORDER BY id LIMIT 3 OFFSET 5";
     
     
     
@@ -47,9 +47,7 @@
         
         while($row = mysqli_fetch_assoc($result)){
             echo "Id: " . $row["id"] . ". Nombre: " . $row["firstname"] . ". Apellidos: " . $row["firstname"] . $row["lastname"] . ". Fecha: " . $row["reg_date"] . "</br>";
-        }
-      
-        
+        }  
     }
     
    
@@ -63,6 +61,8 @@
     }else{
         echo "Error ejecutando la consulta: " . $conn->error;
     }
+   
+    
     
     
     //CERRAMOS LA CONEXION

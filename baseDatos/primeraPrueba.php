@@ -64,15 +64,17 @@ if (mysqli_num_rows($result) > 0) {
             array_push($idAñadir, $num);
         }
     }
+    
 
     foreach ($idAñadir as $a) {
 
         //Procedo a añadir usuarios en los ids vacios
-        $sql = "INSERT INTO myguests (firstname, lastname, email) 
-            VALUES('Pablo', 'asdd','asd@gmail.com') WHERE ID = " . $idAñadir[$a];
+        $sql = "INSERT INTO myguests (firstname, lastname, email, id) 
+            VALUES('Pablo', 'asdd','asd@gmail.com', " . $a . ")";
 
         //Ejecutamos la consulta sql
         if ($conn->query($sql) == TRUE) {
+            echo "</br>";
             $last_id = mysqli_insert_id($conn); //DEVUELVE EL ID DEL ULTIMO REGISTRO QUE SE INSERTO EN UNA TABLA CON UNA COLUMNA AUTO-INCREMENT
             echo "La consulta: " . $sql . " se ha iniciado con exito.</br>";
             echo "El ultimo id insertado es: " . $last_id;
@@ -91,14 +93,14 @@ if (mysqli_num_rows($result) > 0) {
 
 
 
-//Ejecutamos la consulta sql
+/*//Ejecutamos la consulta sql
 if ($conn->query($sql) == TRUE) {
     $last_id = mysqli_insert_id($conn); //DEVUELVE EL ID DEL ULTIMO REGISTRO QUE SE INSERTO EN UNA TABLA CON UNA COLUMNA AUTO-INCREMENT
     echo "La consulta: " . $sql . " se ha iniciado con exito.</br>";
-    echo "El ultimo id insertado es: " . $last_id;
+    echo "El ultimo id insertado es: " . $last_id;  
 } else {
     echo "Error ejecutando la consulta: " . $conn->error;
-}
+}*/
 
 
 //CERRAMOS LA CONEXION

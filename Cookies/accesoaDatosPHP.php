@@ -134,6 +134,68 @@
  *      }
  * 
  * 
+ * 
+ * 7.2 Almacenes de datos
+ * 
+ *      Ventajas de los sistemas gestores de base de datos (SGBD)
+ *          -Beneficios Arquitectonicos
+ *              -Separacion entre logica de aplicacion y datos
+ *              -Escalabilidad 
+ *              -Alta disponibilidad y tolerancia al fallos
+ *              -Gestion centralizada de datos
+ *           
+ *                       
+ *          -Ventajas en gestion de datos
+ *              -Integridad referencial
+ *              -Respaldo y recuperacion
+ *              -Consistencia
+ * 
+ *          -Beneficios operacionales
+ *              -Consultas complejas optimizadas
+ *              -Monitorizacion y auditoria
+ *              
+ * 
+ * 
+ * 
+ *      Fundamentos BBDD -> Diseño de BBDD
+ * 
+ *          -Diseño conceptual 
+ *              -Modelo entidad relacion
+ *              -Identificacion atributos
+ *              -Cardinalidad de relacio     
+ *              -Normalizacion de datos
+ * 
+ *          
+ *          -Diseño logico
+ *              -Definicion de tablas y relaciones
+ *              -Especificacion de claves primarias y foraneas
+ *             
+ * 
+ *          -Diseño fisico 
+ *              -Seleccion de tipo de datos
+ *              -Definicion de indices 
+ *              -Estrategias de almacenamiento
+ *              -etc...
+ * 
+ * 
+ *         
+ *      Lenguaje DDL (Data Definition Languaje)
+ * 
+ *          -Create table tabla ( id INT PRIMARY, Campo1 VARCHAR(50), 
+ *          Campo2 DATE, FOREIGN KEY (campo_ref) REFERENCES otra_tabla(id));
+ *          
+ *         
+ *      BP 
+ *          -Usar siempre consultas separadas
+ *          -Credenciales -> Fuera del codigo fuente
+ *          -Implementar manejo de errores
+ *          
+ *          -Cerrar conexiones fuando no se necesiten
+ *          -Reutilizar conexiones 
+ *          -Monitorear el uso de recursos
+ * 
+ * 
+ * 
  */
 
 
