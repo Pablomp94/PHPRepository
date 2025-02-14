@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "Pablo";
 $password = "123";
-$dbname = "dnis";
+$dbname = "prueba";
 
 //Me creo la conexion a mi base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -15,31 +15,24 @@ if ($conn->connect_error) {
     echo "La conexion se ha realizado correctamente </br>";
 }
 
-$dniArray = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"];
 
 // Verificamos si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $dni = $_POST['dni'];
+    $imagen = $_POST['archivo'];
 
-    $numLetra = ($dni % 23);
-    
-    $letra = $dniArray[($numLetra)];
-           
-    $dniFinal = ($dni . "" . $letra);
 
-    echo $dniFinal;
-    
-    $sql = "INSERT INTO dnis (DNI) VALUES ('$dniFinal')";
-    
-    $sqlMostrar = "SELECT * FROM dnis";
+    $sql = "INSERT INTO myguests(firstname,lastname,email,IMAGEN)
+            VALUES('Pepe', 'asddddsd', 'fasjdsa@gmail.com', '$imagen')";
+
+    $sqlMostrar = "SELECT * FROM myguests";
 
     $result = mysqli_query($conn, $sqlMostrar);
-     
-    if(mysqli_num_rows($result) > 0){
-        
+
+    if (mysqli_num_rows($result) > 0) {
+
         while($row = mysqli_fetch_assoc($result)){
-            echo "DNI: " . $row["DNI"] . "</br>";
+            echo "Id: " . $row["id"] . ". Nombre: " . $row["firstname"] . ". Apellidos: " . $row["firstname"] . $row["lastname"] . ". Fecha: " . $row["reg_date"] . ". Imagen:  " . $row["IMAGEN"] . "</br>";
         }  
     }
 
@@ -52,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 
+
 //CERRAMOS LA CONEXION
 mysqli_close($conn); 
 ?>
@@ -60,8 +54,8 @@ mysqli_close($conn);
         <title>title</title>
     </head>
     <style>
-        
-           /* Estilos generales */
+
+        /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
             background-color: lightgray;
@@ -126,7 +120,7 @@ mysqli_close($conn);
 
         .error {
             color: red;
-            background-color: lightpink; 
+            background-color: lightpink;
             border: 2px solid black;
             padding: 12px;
             width: 100%;
@@ -136,21 +130,18 @@ mysqli_close($conn);
             disoplay: block;
             box-sizing: border-box;
         }
-        
+
     </style>
     <body>
         <h1>FORMULARIO DE REGISTRO</h1></br>
         <!-- Formulario que se procesa en el mismo archivo -->
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-
-            <!-- Campo para el nombre de usuario -->
-            <label for="username">DNI:</label>
-            <input type="text" id="dni" name="dni">
-
+        <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
+            Archivo: <input type="image" name="archivo">
+            </br>
             
-            <!-- Botón para enviar el formulario -->
-            <input type="submit" value="Registrar sesión">
+            <button type="submit" name="submit" value="Submit"> Subir </button>
         </form>
+
     </body>
 </html>
 
