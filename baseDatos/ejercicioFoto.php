@@ -17,23 +17,42 @@ if ($conn->connect_error) {
 
 
 // Verificamos si se envió el formulario
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if (isset($_FILES['archivo'])) {
 
-    $imagen = $_POST['archivo'];
+    $permitidos = ['image/jpeg', 'image/png', 'application/pdf'];
+    if (!in_array($_FILES['archivo']['type'], $permitidos)) {
+        die('Tipo de fichero no permitido');
+    }
+
+    $archivo = $_FILES['archivo'];
+
+    $nombre = $archivo['name'];
+
+    $error = $archivo['error'];
+
+    $tmp_name = $archivo['tmp_name'];
+
+    $rutaUno = 'C:\xampp\htdocs\PHPRepository\baseDatos\Imagenes';
+    $imagen = $_FILES['archivo'];
+
+    if ($error == 0) {
+        $destino = ($rutaUno . "\ " . $nombre);
+        move_uploaded_file($tmp_name, $destino);
+    }
 
 
-    $sql = "INSERT INTO myguests(firstname,lastname,email,IMAGEN)
-            VALUES('Pepe', 'asddddsd', 'fasjdsa@gmail.com', '$imagen')";
+    $sql = "INSERT INTO ejercicioImagenes(IMAGEN)
+            VALUES($destino)";
 
-    $sqlMostrar = "SELECT * FROM myguests";
+    $sqlMostrar = "SELECT * FROM ejercicioImagenes";
 
     $result = mysqli_query($conn, $sqlMostrar);
 
     if (mysqli_num_rows($result) > 0) {
 
-        while($row = mysqli_fetch_assoc($result)){
-            echo "Id: " . $row["id"] . ". Nombre: " . $row["firstname"] . ". Apellidos: " . $row["firstname"] . $row["lastname"] . ". Fecha: " . $row["reg_date"] . ". Imagen:  " . $row["IMAGEN"] . "</br>";
-        }  
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "Id: " . $row["id"] . "Imagen: " . $row["IMAGEN"] . "</br>";
+        }
     }
 
     //Ejecutamos la consulta sql
@@ -47,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 //CERRAMOS LA CONEXION
-mysqli_close($conn); 
+mysqli_close($conn);
 ?>
 <html>
     <head>
@@ -133,12 +152,12 @@ mysqli_close($conn);
 
     </style>
     <body>
-        <h1>FORMULARIO DE REGISTRO</h1></br>
+
         <!-- Formulario que se procesa en el mismo archivo -->
+        <h1>Subida de archivo</h1></br>
         <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
-            Archivo: <input type="image" name="archivo">
-            </br>
-            
+            Archivo: <input type="file" name="archivo">
+            <br><br>
             <button type="submit" name="submit" value="Submit"> Subir </button>
         </form>
 
