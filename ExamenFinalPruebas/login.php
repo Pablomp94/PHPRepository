@@ -1,14 +1,25 @@
+<?php
+$error = "";
+
+// Verificamos si se envió el formulario
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+    $nombreUsuario = $_POST['nombreUsuario'];
+    $contraseña = $_POST['Contraseña'];
+
+    
+    
+}
+?>
+
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edit this template
--->
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>REGISTRO</title>
+        <title>Iniciar Sesión</title>
     </head>
     <style>
+
         /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
@@ -21,7 +32,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
             height: 100vh;
         }
 
-        h1 {
+        h1{
             color: #333;
             text-align: center;
             margin: 20px;
@@ -74,43 +85,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         .error {
             color: red;
+            font-size: 16px;
+            text-align: center;
         }
+
     </style>
     <body>
-        <?php
-        $error = null;
-        $username = null;
-        $password = null;
-        // Verificamos si se envió el formulario
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        <h1>FORMULARIO DE LOGIN<h1>
+                <!-- Formulario que se procesa en el mismo archivo -->
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <!-- Campo para el nombre de usuario -->
+                    <label for="username">Nombre de Usuario:</label>
+                    <input type="text" id="nombreUsuario" name="nombreUsuario">
 
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+                    <!-- Campo para la contraseña -->
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="Contraseña" name="Contraseña">
 
-            if ($username == null || $password == null) {
-                $error = "Ninguno de los campos pueden estar vacios";
-            }
-            
-            
-        }
-        ?>
-
-        <h1>FORMULARIO DE REGISTRO</h1></br>
-        <!-- Formulario que se procesa en el mismo archivo -->
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-
-            <!-- Campo para el nombre de usuario -->
-            <label for="username">Nombre:</label>
-            <input type="text" id="username" name="username">
-
-            <!-- Campo para la contraseña -->
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password">
-
-            <span class=error><?php echo $error ?></span>
-            <!-- Botón para enviar el formulario -->
-            <input type="submit" value="Registrar sesión">
-        </form>
-
-    </body>
-</html>
+                    <span><?php echo $error ?></span>
+                    <!-- Botón para enviar el formulario -->
+                    <input type="submit" value="Iniciar sesión">
+                </form>
+                </body>
+                </html>
