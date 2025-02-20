@@ -16,6 +16,12 @@ $flagFormulario = 1;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+
+    $sql = "SELECT * FROM usuarios";
+    $stmt = $pdo->query($sql);
+
+    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     if (empty($_POST["nombreUsuario"])) {
         $errornombreUsuario = "El nombre del usuario es obligatorio";
         $nombreUsuario = "";
@@ -23,12 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
         $nombreUsuario = ($_POST["nombreUsuario"]);
-
-        $sql = "SELECT * FROM usuarios";
-        $stmt = $pdo->query($sql);
-
-        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         foreach ($usuarios as $usuario) {
             if ($nombreUsuario == $usuario["nombreUsuario"]) {
                 $flagFormulario = 0;
@@ -72,6 +72,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $flagFormulario = 0;
         } else {
             $email = $_POST["Email"];
+            foreach ($usuarios as $usuario) {
+                if ($email == $usuario["Email"]) {
+                    $flagFormulario = 0;
+                    $errorEmail = "El Email ya esta en uso";
+                }
+            }
         }
     }
 
@@ -85,19 +91,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $flagFormulario = 0;
         } else {
             $dni = $_POST["Dni"];
+            foreach ($usuarios as $usuario) {
+                if ($dni == $usuario["DNI"]) {
+                    $flagFormulario = 0;
+                    $errorDni = "El DNI ya esta en uso";
+                }
+            }
         }
-    }
 
-    if (empty($_POST["Telefono"])) {
-        $errorTelefono = "El Telefono es obligatorio";
-        $telefono = "";
-        $flagFormulario = 0;
-    } else {
-        if (!preg_match("/^[0-9]{9}$/", $_POST["Telefono"])) {
-            $errorTelefono = "Credenciales Incorrectas";
+        if (empty($_POST["Telefono"])) {
+            $errorTelefono = "El Telefono es obligatorio";
+            $telefono = "";
             $flagFormulario = 0;
         } else {
-            $telefono = $_POST["Telefono"];
+            if (!preg_match("/^[0-9]{9}$/", $_POST["Telefono"])) {
+                $errorTelefono = "Credenciales Incorrectas";
+                $flagFormulario = 0;
+            } else {
+                $telefono = $_POST["Telefono"];
+                foreach ($usuarios as $usuario) {
+                    if ($telefono == $usuario["Telefono"]) {
+                        $flagFormulario = 0;
+                        $errorTelefono = "El Telefono ya esta en uso";
+                    }
+                }
+            }
         }
     }
 
@@ -108,26 +126,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $imagen = ($_POST["Imagen"]);
     }
-}
-
-if ($flagFormulario == 1) {
 
 
-    $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, E-mail, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$imagen')";
-    $stmt = $pdo->query($sql);
 
-    echo "<div id=datos>";
-    echo $nombreUsuario . "</br>";
-    echo $contraseña . "</br>";
-    echo $nombre . "</br>";
-    echo $apellidos . "</br>";
-    echo $email . "</br>";
-    echo $dni . "</br>";
-    echo $telefono . "</br>";
-    echo $imagen . "</br>";
-    echo "</div>";
-    header("refresh:3;url=login.php");
-    echo "Redirigiendo...";
+
+    if ($flagFormulario == 1) {
+
+
+        $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$imagen')";
+        $stmt = $pdo->query($sql);
+
+        echo "<div id=datos>";
+        echo $nombreUsuario . "</br>";
+        echo $contraseña . "</br>";
+        echo $nombre . "</br>";
+        echo $apellidos . "</br>";
+        echo $email . "</br>";
+        echo $dni . "</br>";
+        echo $telefono . "</br>";
+        echo $imagen . "</br>";
+        echo "</div>";
+        header("refresh:3;url=login.php");
+        echo "Redirigiendo...";
+    }
 }
 ?>
 
