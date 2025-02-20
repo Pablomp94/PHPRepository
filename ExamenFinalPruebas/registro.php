@@ -5,7 +5,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 -->
 
 <?php
-require_once 'conexion.php'; // Incluir la conexión
+require_once 'config.php'; // Incluir la conexión
 
 
 $errornombreUsuario = $errorContraseña = $errorNombre = $errorApellidos = $errorEmail = $errorDni = $errorTelefono = $errorImagen = "";
@@ -23,18 +23,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
 
         $nombreUsuario = ($_POST["nombreUsuario"]);
-        
+
         $sql = "SELECT * FROM usuarios";
         $stmt = $pdo->query($sql);
 
         $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($usuarios as $usuario) {
-            if($nombreUsuario == $usuario["nombreUsuario"])
+            if ($nombreUsuario == $usuario["nombreUsuario"]) {
+                $flagFormulario = 0;
+                $errornombreUsuario = "El nombre de usuario ya esta en uso";
+            }
         }
-
-
-        
     }
 
     if (empty($_POST["Contraseña"])) {
@@ -111,6 +111,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if ($flagFormulario == 1) {
+
+
+    $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, E-mail, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$imagen')";
+    $stmt = $pdo->query($sql);
+
     echo "<div id=datos>";
     echo $nombreUsuario . "</br>";
     echo $contraseña . "</br>";
