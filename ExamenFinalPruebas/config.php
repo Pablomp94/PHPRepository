@@ -34,7 +34,7 @@ try {
     )";
     $pdo->exec($sqlArticulos);
 
-    echo "Configuración completada con éxito.";
+    //echo "Configuración completada con éxito.";
 } catch (PDOException $e) {
     die("Error en la conexión o configuración: " . $e->getMessage());
 }

@@ -13,8 +13,10 @@ $errornombreUsuario = $errorContraseña = $errorNombre = $errorApellidos = $erro
 $nombreUsuario = $contraseña = $nombre = $apellidos = $email = $dni = $telefono = $imagen = "";
 
 $flagFormulario = 1;
+$flagDatos = 0;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
 
 
     $sql = "SELECT * FROM usuarios";
@@ -129,25 +131,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-
     if ($flagFormulario == 1) {
-
 
         $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$imagen')";
         $stmt = $pdo->query($sql);
-
-        echo "<div id=datos>";
-        echo $nombreUsuario . "</br>";
-        echo $contraseña . "</br>";
-        echo $nombre . "</br>";
-        echo $apellidos . "</br>";
-        echo $email . "</br>";
-        echo $dni . "</br>";
-        echo $telefono . "</br>";
-        echo $imagen . "</br>";
-        echo "</div>";
+        
+        $flagDatos = 1;
         header("refresh:3;url=login.php");
-        echo "Redirigiendo...";
     }
 }
 ?>
@@ -164,123 +154,256 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         /* Estilos generales */
         body {
-            font-family: Arial, sans-serif;
-            background-color: lightgray;
+            font-family: 'Arial', sans-serif;
+            background: #f9f9f9;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Asegura que ocupe toda la altura de la pantalla */
+            color: #333;
+            overflow: hidden; /* Evita el scroll horizontal */
+            flex-direction: column;
         }
 
         h1 {
             color: #333;
+            font-size: 1.8rem;
             text-align: center;
-            margin: 20px;
+            margin-bottom: 15px;
         }
 
-        /* Formulario */
-        form {
-            background-color: #ffffff;
-            padding: 30px;
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background: #ffffff;
+            padding: 10px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
+            max-width: 400px; /* Ancho reducido */
+            box-sizing: border-box;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+            width: 100%;
+            text-align: left;
         }
 
         label {
-            font-size: 18px;
-            margin-bottom: 2px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 4px;
             display: block;
             color: #333;
         }
 
-
         input {
             width: 100%;
-            padding: 10px;
-            margin: 3px 0;
+            padding: 8px;
+            margin: 6px 0;
             border-radius: 4px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            transition: border-color 0.3s ease-in-out;
             box-sizing: border-box;
-            font-size: 16px;
+        }
+
+        input:focus {
+            border-color: #6a11cb;
+            outline: none;
         }
 
         input[type="submit"] {
-            background-color: #4CAF50;
+            background: #6a11cb;
             color: white;
             border: none;
-            padding: 12px;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
             width: 100%;
             border-radius: 4px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         input[type="submit"]:hover {
-            background-color: darkgreen;
+            background: #2575fc;
         }
 
         .error {
-            color: red;
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: -5px;
+            margin-bottom: 8px;
+            text-align: left;
         }
+
+        /* Estilo de datos registrados */
+        #datos {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #datos h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        /* Diseño responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 15px;
+                width: 90%; /* Ajuste a pantallas más pequeñas */
+            }
+
+            label {
+                font-size: 0.85rem;
+            }
+
+            input {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            input[type="submit"] {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+
+        /* Para pantallas pequeñas, como móviles */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 10px;
+                width: 95%; /* Más estrecho en pantallas móviles */
+            }
+
+            label {
+                font-size: 0.8rem;
+            }
+
+            input {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            input[type="submit"] {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .form-group {
+                margin-bottom: 8px;
+            }
+        }
+
     </style>
-    <body>
+</head>
+<body>
 
+    <div class="container">
+        <h1>Formulario de Registro</h1>
 
-        <h1>FORMULARIO DE REGISTRO</h1></br>
-        <!-- Formulario que se procesa en el mismo archivo -->
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
-            <!-- Campo para el nombre de usuario -->
-            <label for="username">Nombre de Usuario:</label>
-            <span class =error><?php echo $errornombreUsuario ?></p></br>
-                <input type="text" id="nombreUsuario" name="nombreUsuario">
+            <!-- Nombre de Usuario -->
+            <div class="form-group">
+                <label for="nombreUsuario">Nombre de Usuario:</label>
+                <input type="text" id="nombreUsuario" name="nombreUsuario" value="<?php echo $nombreUsuario; ?>">
+                <span class="error"><?php echo $errornombreUsuario; ?></span>
+            </div>
 
-                <!-- Campo para la contraseña -->
-                <label for="password">Contraseña:</label>
-                <span class ='error'><?php echo $errorContraseña ?></p></br>
-                    <input type="password" id="Contraseña" name="Contraseña">
+            <!-- Contraseña -->
+            <div class="form-group">
+                <label for="Contraseña">Contraseña:</label>
+                <input type="password" id="Contraseña" name="Contraseña">
+                <span class="error"><?php echo $errorContraseña; ?></span>
+            </div>
 
-                    <!--Campo para el nombre-->
-                    <label for="username">Nombre:</label>
-                    <span class =error><?php echo $errorNombre ?></p></br>
-                        <input type="text" id="Nombre" name="Nombre">
+            <!-- Nombre -->
+            <div class="form-group">
+                <label for="Nombre">Nombre:</label>
+                <input type="text" id="Nombre" name="Nombre" value="<?php echo $nombre; ?>">
+                <span class="error"><?php echo $errorNombre; ?></span>
+            </div>
 
-                        <!--Campo para el Apellidos-->
-                        <label for="username">Apellidos:</label>
-                        <span class =error><?php echo $errorApellidos ?></p></br>
-                            <input type="text" id="Apellidos" name="Apellidos">
+            <!-- Apellidos -->
+            <div class="form-group">
+                <label for="Apellidos">Apellidos:</label>
+                <input type="text" id="Apellidos" name="Apellidos" value="<?php echo $apellidos; ?>">
+                <span class="error"><?php echo $errorApellidos; ?></span>
+            </div>
 
-                            <!--Campo para el E-mail-->
-                            <label for="username">E-mail:</label>
-                            <span class =error><?php echo $errorEmail ?></p></br>
-                                <input type="text" id="Email" name="Email">
+            <!-- Email -->
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="email" id="Email" name="Email" value="<?php echo $email; ?>">
+                <span class="error"><?php echo $errorEmail; ?></span>
+            </div>
 
-                                <!--Campo para el DNI-->
-                                <label for="username">DNI:</label>
-                                <span class =error><?php echo $errorDni ?></p></br>
-                                    <input type="text" id="Dni" name="Dni">
+            <!-- DNI -->
+            <div class="form-group">
+                <label for="Dni">DNI:</label>
+                <input type="text" id="Dni" name="Dni" value="<?php echo $dni; ?>">
+                <span class="error"><?php echo $errorDni; ?></span>
+            </div>
 
-                                    <!--Campo para el Telefono-->
-                                    <label for="username">Telefono:</label>
-                                    <span class =error><?php echo $errorTelefono ?></p></br>
-                                        <input type="number" id="Telefono" name="Telefono">
+            <!-- Teléfono -->
+            <div class="form-group">
+                <label for="Telefono">Teléfono:</label>
+                <input type="text" id="Telefono" name="Telefono" value="<?php echo $telefono; ?>">
+                <span class="error"><?php echo $errorTelefono; ?></span>
+            </div>
 
-                                        <!--Campo para la imagen-->
-                                        <label for="username">Imagen:</label>
-                                        <span class =error><?php echo $errorImagen ?></span></br>
-                                        <input type="file" name="Imagen">
+            <!-- Imagen -->
+            <div class="form-group">
+                <label for="Imagen">Imagen:</label>
+                <input type="file" name="Imagen">
+                <span class="error"><?php echo $errorImagen; ?></span>
+            </div>
 
+            <!-- Botón de Envío -->
+            <div class="form-group">
+                <input type="submit" value="Registrar">
+            </div>
 
+        </form>
 
-                                        <!-- Botón para enviar el formulario -->
-                                        <input type="submit" value="Registrar sesión">
-                                        </form>
+        <?php
+        if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
+            echo "<div id='datos'>";
+            echo "<h3>Datos registrados:</h3>";
+            echo "Nombre de usuario: $nombreUsuario<br>";
+            echo "Contraseña: $contraseña<br>";
+            echo "Nombre: $nombre<br>";
+            echo "Apellidos: $apellidos<br>";
+            echo "Email: $email<br>";
+            echo "DNI: $dni<br>";
+            echo "Teléfono: $telefono<br>";
+            echo "Imagen: $imagen<br>";
+            echo "</div>";
+            echo "<p>Redirigiendo...</p>";
+        }
+        ?>
 
-                                        </body>
-                                        </html>
+    </div>
+
+</body>
+</html>
