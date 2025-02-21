@@ -14,6 +14,7 @@ $nombreUsuario = $contraseña = $nombre = $apellidos = $email = $dni = $telefono
 
 $flagFormulario = 1;
 $flagDatos = 0;
+$flagImagen = 0;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -91,44 +92,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!preg_match("/^[0-9]{8}$/", $_POST["Dni"])) {
             $errorDni = "CREDENCIALES INCORRECTAS, debe de contener los 8 numeros";
             $flagFormulario = 0;
+            $flagDni = 0;
         } else {
             $dni = $_POST["Dni"];
             foreach ($usuarios as $usuario) {
                 if ($dni == $usuario["DNI"]) {
                     $flagFormulario = 0;
+                    $flagDni = 1;
                     $errorDni = "El DNI ya esta en uso";
                 }
             }
-        }
 
-        if (empty($_POST["Telefono"])) {
-            $errorTelefono = "El Telefono es obligatorio";
-            $telefono = "";
+            if ($flagDni == 0) {
+
+                $dniArray = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"];
+
+                $numLetra = ($dni % 23);
+
+                $letra = $dniArray[($numLetra)];
+
+                $dni = ($dni . "" . $letra);
+                
+            }
+        }
+    }
+
+    if (empty($_POST["Telefono"])) {
+        $errorTelefono = "El Telefono es obligatorio";
+        $telefono = "";
+        $flagFormulario = 0;
+    } else {
+        if (!preg_match("/^[0-9]{9}$/", $_POST["Telefono"])) {
+            $errorTelefono = "Credenciales Incorrectas";
             $flagFormulario = 0;
         } else {
-            if (!preg_match("/^[0-9]{9}$/", $_POST["Telefono"])) {
-                $errorTelefono = "Credenciales Incorrectas";
-                $flagFormulario = 0;
-            } else {
-                $telefono = $_POST["Telefono"];
-                foreach ($usuarios as $usuario) {
-                    if ($telefono == $usuario["Telefono"]) {
-                        $flagFormulario = 0;
-                        $errorTelefono = "El Telefono ya esta en uso";
-                    }
+            $telefono = $_POST["Telefono"];
+            foreach ($usuarios as $usuario) {
+                if ($telefono == $usuario["Telefono"]) {
+                    $flagFormulario = 0;
+                    $errorTelefono = "El Telefono ya esta en uso";
                 }
             }
         }
     }
 
+
     if (empty($_POST["Imagen"])) {
         $errorImagen = "La imagen es obligatoria";
-        $imagen = "";
         $flagFormulario = 0;
     } else {
 
         $permitidos = ['image/jpeg', 'image/png'];
-        $archivo = $_FILES['archivo'];
+        $archivo = $_FILES['Imagen'];
 
         if (!in_array($archivo['type'], $permitidos)) {
             $flagFormulario = 0;
@@ -153,18 +168,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $destinoBase = $rutaUno . "/" . $nombreImagen;
 
         move_uploaded_file($tmp_name, $destinoCarpeta);
+
+        $flagImagen = 1;
     }
+}
 
 
 
-    if ($flagFormulario == 1) {
 
-        $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$destinoBase')";
-        $stmt = $pdo->query($sql);
 
-        $flagDatos = 1;
-        header("refresh:3;url=login.php");
-    }
+
+
+if ($flagFormulario == 1 && $flagImagen == 1) {
+
+    $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$destinoBase')";
+    $stmt = $pdo->query($sql);
+
+    $flagDatos = 1;
+    header("refresh:3;url=login.php");
 }
 ?>
 
@@ -347,7 +368,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container">
         <h1>Formulario de Registro</h1>
 
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+        <form method="POST" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
             <!-- Nombre de Usuario -->
             <div class="form-group">

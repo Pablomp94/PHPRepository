@@ -1,14 +1,36 @@
 <?php
+require_once 'config.php'; // Incluir la conexión
+
+
 $error = "";
+$existeUsuario = FALSE;
+$contraseñaError = 0;
+
+
+$usuarioServer = "";
+$contraseñaServer = "";
 
 // Verificamos si se envió el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    
+
     $nombreUsuario = $_POST['nombreUsuario'];
     $contraseña = $_POST['Contraseña'];
 
+    $sql = "SELECT * FROM usuarios WHERE nombreUsuario = '$nombreUsuario'";
+    $stmt = $pdo->query($sql);
+
+    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($usuarios as $usuario) {
+        if ($nombreUsuario == $usuario["nombreUsuario"]) {
+            $contraseñaServer = $usuario["Contraseña"];
+            $existeUsuario = TRUE;
+        }
+    }
     
-    
+    if($existeUsuario == FALSE){
+        $error = "El usuario introducido no existe";
+    }
 }
 ?>
 
@@ -91,20 +113,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     </style>
     <body>
-        <h1>FORMULARIO DE LOGIN<h1>
-                <!-- Formulario que se procesa en el mismo archivo -->
-                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                    <!-- Campo para el nombre de usuario -->
-                    <label for="username">Nombre de Usuario:</label>
-                    <input type="text" id="nombreUsuario" name="nombreUsuario">
+        <h1>FORMULARIO DE LOGIN</h1>
+        <!-- Formulario que se procesa en el mismo archivo -->
+        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <!-- Campo para el nombre de usuario -->
+            <label for="username">Nombre de Usuario:</label>
+            <input type="text" id="nombreUsuario" name="nombreUsuario">
 
-                    <!-- Campo para la contraseña -->
-                    <label for="password">Contraseña:</label>
-                    <input type="password" id="Contraseña" name="Contraseña">
+            <!-- Campo para la contraseña -->
+            <label for="password">Contraseña:</label>
+            <input type="password" id="Contraseña" name="Contraseña">
 
-                    <span><?php echo $error ?></span>
-                    <!-- Botón para enviar el formulario -->
-                    <input type="submit" value="Iniciar sesión">
-                </form>
-                </body>
-                </html>
+            <span class="error"><?php echo $error; ?></span>
+            <!-- Botón para enviar el formulario -->
+            <input type="submit" value="Iniciar sesión">
+        </form>
+    </body>
+</html>
