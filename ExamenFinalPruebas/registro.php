@@ -126,16 +126,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imagen = "";
         $flagFormulario = 0;
     } else {
-        $imagen = ($_POST["Imagen"]);
+
+        $permitidos = ['image/jpeg', 'image/png'];
+        $archivo = $_FILES['archivo'];
+
+        if (!in_array($archivo['type'], $permitidos)) {
+            $flagFormulario = 0;
+            die('<p class="error">Tipo de archivo no permitido.</p>');
+        }
+
+        if (in_array($archivo['type'], $permitidos[0])) {
+            $tip = ".jpeg";
+        } else if (in_array($archivo['type'], $permitidos[1])) {
+            $tip = ".png";
+        }
+
+        $nombreImagen = $dni . "-" . $telefono . "_" . $usuario . $tip;
+        $error = $archivo['error'];
+        $tmp_name = $archivo['tmp_name'];
+
+        $imagen = $nombre;
+
+        $rutaUno = "http://localhost/PHPRepository/ExamenFinalPruebas/uploads";
+        $rutaDos = "C:/xampp/htdocs/PHPRepository/ExamenFinalPruebas/uploads";
+        $destinoCarpeta = $rutaDos . "/" . $nombreImagen;
+        $destinoBase = $rutaUno . "/" . $nombreImagen;
+
+        move_uploaded_file($tmp_name, $destinoCarpeta);
     }
 
 
 
     if ($flagFormulario == 1) {
 
-        $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$imagen')";
+        $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$destinoBase')";
         $stmt = $pdo->query($sql);
-        
+
         $flagDatos = 1;
         header("refresh:3;url=login.php");
     }
@@ -386,22 +412,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </form>
 
-        <?php
-        if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
-            echo "<div id='datos'>";
-            echo "<h3>Datos registrados:</h3>";
-            echo "Nombre de usuario: $nombreUsuario<br>";
-            echo "Contraseña: $contraseña<br>";
-            echo "Nombre: $nombre<br>";
-            echo "Apellidos: $apellidos<br>";
-            echo "Email: $email<br>";
-            echo "DNI: $dni<br>";
-            echo "Teléfono: $telefono<br>";
-            echo "Imagen: $imagen<br>";
-            echo "</div>";
-            echo "<p>Redirigiendo...</p>";
-        }
-        ?>
+<?php
+if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
+    echo "<div id='datos'>";
+    echo "<h3>Datos registrados:</h3>";
+    echo "Nombre de usuario: $nombreUsuario<br>";
+    echo "Contraseña: $contraseña<br>";
+    echo "Nombre: $nombre<br>";
+    echo "Apellidos: $apellidos<br>";
+    echo "Email: $email<br>";
+    echo "DNI: $dni<br>";
+    echo "Teléfono: $telefono<br>";
+    echo "Imagen: $nombreImagen<br>";
+    echo "</div>";
+    echo "<p>Redirigiendo...</p>";
+}
+?>
 
     </div>
 
