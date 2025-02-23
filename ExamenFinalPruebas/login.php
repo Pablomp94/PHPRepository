@@ -6,7 +6,6 @@ $error = "";
 $existeUsuario = FALSE;
 $contraseñaError = 0;
 
-
 $usuarioServer = "";
 $contraseñaServer = "";
 
@@ -22,13 +21,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($usuarios as $usuario) {
-        if ($nombreUsuario == $usuario["nombreUsuario"]) {
-            $contraseñaServer = $usuario["Contraseña"];
+        if ($nombreUsuario == $usuario["nombreUsuario"]) {        
             $existeUsuario = TRUE;
+            
+            if ((password_verify($contraseña, $usuario["Contraseña"]))) {       
+                echo "<h1>Bienvenido/a " . $nombreUsuario . "</h1>";
+                 header("Location: gestion_articulos.php?usuario=" . urlencode($nombreUsuario));
+            } else {
+                $error = "<h2 class = error>Contraseña incorrecta.</h2>";
+            }
         }
     }
-    
-    if($existeUsuario == FALSE){
+
+    if ($existeUsuario == FALSE) {
         $error = "El usuario introducido no existe";
     }
 }

@@ -2,8 +2,8 @@
 
 // Configuración de la base de datos
 $servername = "localhost:3306";
-$username = "Pablo";
-$password = "123";
+$username = "root";
+$password = "";
 $dbname = "examen";
 
 try {
@@ -36,7 +36,7 @@ try {
 
     //echo "Configuración completada con éxito.";
 } catch (PDOException $e) {
-    die("Error en la conexión o configuración: " . $e->getMessage());
+    die ("Error en la conexión o configuración: " . $e->getMessage());
 }
 
 ?>
