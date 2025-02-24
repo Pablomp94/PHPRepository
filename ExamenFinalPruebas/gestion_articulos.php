@@ -9,41 +9,55 @@ if (!isset($_GET["usuario"])) {
 
 $nombreUsuario = $_GET["usuario"];
 
-// Consultar la base de datos para obtener los datos del usuario
+// Consultar datos del usuario
 $stmt = $pdo->prepare("SELECT Nombre, Apellidos, Email, Imagen FROM usuarios WHERE nombreUsuario = ?");
 $stmt->execute([$nombreUsuario]);
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-
 if (!$usuario) {
     die("Error: Usuario no encontrado.");
 }
+
+// Manejo de cookies (estadísticas)
+$consultas = isset($_COOKIE['total_consultas']) ? $_COOKIE['total_consultas'] + 1 : 1;
+setcookie('total_consultas', $consultas, time() + (30 * 24 * 60 * 60), "/");
+
+// Obtener artículos
+$stmt = $pdo->query("SELECT * FROM articulos");
+$articulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$total_articulos = count($articulos);
+setcookie('total_articulos', $total_articulos, time() + (30 * 24 * 60 * 60), "/");
+
+// Agregar artículo
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nombre"])) {
+    $stmt = $pdo->prepare("INSERT INTO articulos (nombre, marca, descripcion, precio) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$_POST["nombre"], $_POST["marca"], $_POST["descripcion"], $_POST["precio"]]);
+    setcookie('ultima_modificacion', date('Y-m-d H:i:s'), time() + (30 * 24 * 60 * 60), "/");
+    header("Location: " . $_SERVER['PHP_SELF'] . "?usuario=" . $nombreUsuario);
+    exit;
+}
+
+// Modificar artículo
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_modificar"])) {
+    $stmt = $pdo->prepare("UPDATE articulos SET nombre=?, marca=?, descripcion=?, precio=? WHERE id=?");
+    $stmt->execute([$_POST["nuevo_nombre"], $_POST["nueva_marca"], $_POST["nueva_descripcion"], $_POST["nuevo_precio"], $_POST["id_modificar"]]);
+    setcookie('ultima_modificacion', date('Y-m-d H:i:s'), time() + (30 * 24 * 60 * 60), "/");
+    header("Location: " . $_SERVER['PHP_SELF'] . "?usuario=" . $nombreUsuario);
+    exit;
+}
+
+$ultima_modificacion = isset($_COOKIE['ultima_modificacion']) ? $_COOKIE['ultima_modificacion'] : 'Sin modificaciones';
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Gestión de Artículos</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
                 text-align: center;
-            }
-            .perfil {
-                margin: 20px auto;
-                padding: 10px;
-                background: white;
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-                display: inline-block;
-                text-align: left;
-            }
-            .perfil img {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                object-fit: cover;
+                background-color: #f4f4f4;
             }
             table {
                 margin: 20px auto;
@@ -54,70 +68,62 @@ if (!$usuario) {
             th, td {
                 padding: 10px;
                 border: 1px solid #ddd;
-                text-align: left;
             }
             th {
                 background: #6a11cb;
                 color: white;
             }
-            .add-article {
-                margin: 20px;
-            }
         </style>
     </head>
     <body>
+        <h2>Bienvenido, <?php echo htmlspecialchars($usuario["Nombre"] . " " . $usuario["Apellidos"]); ?></h2>
+        <p>Email: <?php echo htmlspecialchars($usuario["Email"]); ?></p>
+        <img src="<?php echo htmlspecialchars($usuario['Imagen']); ?>" width="100" height="100" alt="Perfil">
 
-        <!-- Datos del usuario -->
-        <div class="perfil">
-            <h2>Bienvenido, <?php echo htmlspecialchars($usuario["Nombre"] . " " . $usuario["Apellidos"]); ?></h2>
-            <p>Email: <?php echo htmlspecialchars($usuario["Email"]); ?></p>
-            <?php $usuarioImagen = $usuario["Imagen"]; ?>
-            <?php echo "<img src='$usuarioImagen' alt='Imagen encontrada'>"; ?>
-        </div>
+        <h3>Agregar Nuevo Artículo</h3>
+        <form method="POST">
+            <input type="text" name="nombre" placeholder="Nombre" required>
+            <input type="text" name="marca" placeholder="Marca" required>
+            <input type="text" name="descripcion" placeholder="Descripción" required>
+            <input type="number" name="precio" step="0.01" placeholder="Precio" required>
+            <button type="submit">Agregar</button>
+        </form>
 
-        <!-- Formulario para agregar artículo -->
-        <div class="add-article">
-            <h3>Agregar Nuevo Artículo</h3>
-            <form method="POST">
-                <input type="text" name="nombre" placeholder="Nombre del artículo" required>
-                <input type="number" name="precio" step="0.01" placeholder="Precio" required>
-                <button type="submit">Guardar</button>
-            </form>
-        </div>
+        <h3>Modificar Artículo</h3>
+        <form method="POST">
+            <input type="number" name="id_modificar" placeholder="ID del artículo" required>
+            <input type="text" name="nuevo_nombre" placeholder="Nuevo nombre" required>
+            <input type="text" name="nueva_marca" placeholder="Nueva marca" required>
+            <input type="text" name="nueva_descripcion" placeholder="Nueva descripción" required>
+            <input type="number" name="nuevo_precio" step="0.01" placeholder="Nuevo precio" required>
+            <button type="submit">Modificar</button>
+        </form>
 
-        <?php
-        // Insertar artículo en la base de datos
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nombre"]) && isset($_POST["precio"])) {
-            $nombreArticulo = $_POST["nombre"];
-            $precio = $_POST["precio"];
-
-            $stmt = $pdo->prepare("INSERT INTO articulos (nombre, precio) VALUES (?, ?)");
-            $stmt->execute([$nombreArticulo, $precio]);
-        }
-
-        // Obtener y mostrar la lista de artículos
-        $stmt = $pdo->query("SELECT * FROM articulos");
-        $articulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        ?>
-
-        <!-- Lista de artículos -->
         <h3>Lista de Artículos</h3>
         <table>
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
+                <th>Marca</th>
+                <th>Descripción</th>
                 <th>Precio</th>
                 <th>Fecha Creación</th>
             </tr>
             <?php foreach ($articulos as $articulo) : ?>
                 <tr>
                     <td><?php echo $articulo["id"]; ?></td>
-                    <td><?php echo htmlspecialchars($articulo["nombre"]); ?></td>
-                    <td><?php echo number_format($articulo["precio"], 2); ?> €</td>
+                    <td><?php echo $articulo["nombre"]; ?></td>
+                    <td><?php echo $articulo["marca"]; ?></td>
+                    <td><?php echo $articulo["descripcion"]; ?></td>
+                    <td><?php echo $articulo["precio"]; ?> €</td>
                     <td><?php echo $articulo["fecha_creacion"]; ?></td>
                 </tr>
             <?php endforeach; ?>
         </table>
 
+        <h3>Estadísticas</h3>
+        <p>Total de consultas: <?php echo isset($_COOKIE['total_consultas']) ? $_COOKIE['total_consultas'] : 0; ?></p>
+        <p>Total de registros: <?php echo isset($_COOKIE['total_articulos']) ? $_COOKIE['total_articulos'] : 0; ?></p>
+        <p>Última modificación: <?php echo $ultima_modificacion; ?></p>
     </body>
 </html>
