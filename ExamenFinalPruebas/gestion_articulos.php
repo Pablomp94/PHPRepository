@@ -17,9 +17,7 @@ if (!$usuario) {
     die("Error: Usuario no encontrado.");
 }
 
-// Manejo de cookies (estadísticas)
-$consultas = isset($_COOKIE['total_consultas']) ? $_COOKIE['total_consultas'] + 1 : 1;
-setcookie('total_consultas', $consultas, time() + (30 * 24 * 60 * 60), "/");
+
 
 // Obtener artículos
 $stmt = $pdo->query("SELECT * FROM articulos");
@@ -27,24 +25,34 @@ $articulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $total_articulos = count($articulos);
 setcookie('total_articulos', $total_articulos, time() + (30 * 24 * 60 * 60), "/");
 
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Agregar artículo
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["nombre"])) {
-    $stmt = $pdo->prepare("INSERT INTO articulos (nombre, marca, descripcion, precio) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$_POST["nombre"], $_POST["marca"], $_POST["descripcion"], $_POST["precio"]]);
-    setcookie('ultima_modificacion', date('Y-m-d H:i:s'), time() + (30 * 24 * 60 * 60), "/");
-    header("Location: " . $_SERVER['PHP_SELF'] . "?usuario=" . $nombreUsuario);
-    exit;
-}
+    if (isset($_POST["nombre"])) {
+        // Manejo de cookies (estadísticas)
+        $consultas = isset($_COOKIE['total_consultas']) ? $_COOKIE['total_consultas'] + 1 : 0;
+        setcookie('total_consultas', $consultas, time() + (30 * 24 * 60 * 60), "/");
+        $stmt = $pdo->prepare("INSERT INTO articulos (nombre, marca, descripcion, precio) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$_POST["nombre"], $_POST["marca"], $_POST["descripcion"], $_POST["precio"]]);
+        setcookie('ultima_modificacion', date('Y-m-d H:i:s'), time() + (30 * 24 * 60 * 60), "/");
+        $stmt = $pdo->query("SELECT * FROM articulos");
+        $articulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $total_articulos = count($articulos);
+        setcookie('total_articulos', $total_articulos, time() + (30 * 24 * 60 * 60), "/");
+    }
 
 // Modificar artículo
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["id_modificar"])) {
-    $stmt = $pdo->prepare("UPDATE articulos SET nombre=?, marca=?, descripcion=?, precio=? WHERE id=?");
-    $stmt->execute([$_POST["nuevo_nombre"], $_POST["nueva_marca"], $_POST["nueva_descripcion"], $_POST["nuevo_precio"], $_POST["id_modificar"]]);
-    setcookie('ultima_modificacion', date('Y-m-d H:i:s'), time() + (30 * 24 * 60 * 60), "/");
+    if (isset($_POST["id_modificar"])) {
+        // Manejo de cookies (estadísticas)
+        $consultas = isset($_COOKIE['total_consultas']) ? $_COOKIE['total_consultas'] + 1 : 0;
+        setcookie('total_consultas', $consultas, time() + (30 * 24 * 60 * 60), "/");
+        $stmt = $pdo->prepare("UPDATE articulos SET nombre=?, marca=?, descripcion=?, precio=? WHERE id=?");
+        $stmt->execute([$_POST["nuevo_nombre"], $_POST["nueva_marca"], $_POST["nueva_descripcion"], $_POST["nuevo_precio"], $_POST["id_modificar"]]);
+        setcookie('ultima_modificacion', date('Y-m-d H:i:s'), time() + (30 * 24 * 60 * 60), "/");
+    }
     header("Location: " . $_SERVER['PHP_SELF'] . "?usuario=" . $nombreUsuario);
-    exit;
 }
-
 $ultima_modificacion = isset($_COOKIE['ultima_modificacion']) ? $_COOKIE['ultima_modificacion'] : 'Sin modificaciones';
 ?>
 
@@ -109,7 +117,7 @@ $ultima_modificacion = isset($_COOKIE['ultima_modificacion']) ? $_COOKIE['ultima
                 <th>Precio</th>
                 <th>Fecha Creación</th>
             </tr>
-            <?php foreach ($articulos as $articulo) : ?>
+<?php foreach ($articulos as $articulo) : ?>
                 <tr>
                     <td><?php echo $articulo["id"]; ?></td>
                     <td><?php echo $articulo["nombre"]; ?></td>
@@ -118,7 +126,7 @@ $ultima_modificacion = isset($_COOKIE['ultima_modificacion']) ? $_COOKIE['ultima
                     <td><?php echo $articulo["precio"]; ?> €</td>
                     <td><?php echo $articulo["fecha_creacion"]; ?></td>
                 </tr>
-            <?php endforeach; ?>
+<?php endforeach; ?>
         </table>
 
         <h3>Estadísticas</h3>
