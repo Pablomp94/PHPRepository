@@ -21,12 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($usuarios as $usuario) {
-        if ($nombreUsuario == $usuario["nombreUsuario"]) {        
+        if ($nombreUsuario == $usuario["nombreUsuario"]) {
             $existeUsuario = TRUE;
-            
-            if ((password_verify($contraseña, $usuario["Contraseña"]))) {       
+
+            if ((password_verify($contraseña, $usuario["Contraseña"]))) {
                 echo "<h1>Bienvenido/a " . $nombreUsuario . "</h1>";
-                 header("Location: gestion_articulos.php?usuario=" . urlencode($nombreUsuario));
+                header("Location: gestion_articulos.php?usuario=" . urlencode($nombreUsuario));
             } else {
                 $error = "<h2 class = error>Contraseña incorrecta.</h2>";
             }
@@ -57,9 +57,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
         }
 
-        h1{
+        h1 {
             color: #333;
             text-align: center;
             margin: 20px;
@@ -94,7 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-size: 16px;
         }
 
-        input[type="submit"] {
+        input[type="submit"],
+        .registro-btn {
             background-color: #4CAF50;
             color: white;
             border: none;
@@ -104,9 +106,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-size: 18px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-top: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: block;
         }
 
-        input[type="submit"]:hover {
+        input[type="submit"]:hover,
+        .registro-btn:hover {
             background-color: darkgreen;
         }
 
@@ -133,5 +140,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <!-- Botón para enviar el formulario -->
             <input type="submit" value="Iniciar sesión">
         </form>
+
+        <!-- Mostrar el botón de registro solo si el usuario no existe -->
+        <?php if (!$existeUsuario && $_SERVER["REQUEST_METHOD"] === "POST"): ?>
+            <a href="registro.php" class="registro-btn">Registrarse</a>
+        <?php endif; ?>
     </body>
 </html>

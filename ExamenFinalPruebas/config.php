@@ -32,7 +32,7 @@ try {
         marca VARCHAR(255) NOT NULL,
         descripcion VARCHAR(500) NOT NULL,
         precio DECIMAL(10,2) NOT NULL,
-        fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
     $pdo->exec($sqlArticulos);
 

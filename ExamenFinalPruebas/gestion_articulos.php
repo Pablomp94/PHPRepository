@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 // Agregar artículo
     if (isset($_POST["nombre"])) {
         // Manejo de cookies (estadísticas)
-        $consultas = isset($_COOKIE['total_consultas']) ? $_COOKIE['total_consultas'] + 1 : 0;
+        $consultas = isset($_COOKIE['total_consultas']) ? $_COOKIE['total_consultas'] + 1 : 1;
         setcookie('total_consultas', $consultas, time() + (30 * 24 * 60 * 60), "/");
         $stmt = $pdo->prepare("INSERT INTO articulos (nombre, marca, descripcion, precio) VALUES (?, ?, ?, ?)");
         $stmt->execute([$_POST["nombre"], $_POST["marca"], $_POST["descripcion"], $_POST["precio"]]);
@@ -124,7 +124,7 @@ $ultima_modificacion = isset($_COOKIE['ultima_modificacion']) ? $_COOKIE['ultima
                     <td><?php echo $articulo["marca"]; ?></td>
                     <td><?php echo $articulo["descripcion"]; ?></td>
                     <td><?php echo $articulo["precio"]; ?> €</td>
-                    <td><?php echo $articulo["fecha_creacion"]; ?></td>
+                    <td><?php echo $articulo["fecha_modificacion"]; ?></td>
                 </tr>
 <?php endforeach; ?>
         </table>

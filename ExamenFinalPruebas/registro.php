@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = "";
         $flagFormulario = 0;
     } else {
-        if (!preg_match("/^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+)\.([a-zA-Z]{3})$/", $_POST["Email"])) {
+        if (!preg_match("/^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+)\.([a-zA-Z])$/", $_POST["Email"])) {
             $errorEmail = "CREDENCIALES INCORRECTAS, -----@----.----";
             $flagFormulario = 0;
         } else {
