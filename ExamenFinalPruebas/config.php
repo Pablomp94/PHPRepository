@@ -2,8 +2,8 @@
 
 // Configuración de la base de datos
 $servername = "localhost:3306";
-$username = "Pablo";
-$password = "123";
+$username = "root";
+$password = "";
 $dbname = "examen";
 
 try {
@@ -29,6 +29,8 @@ try {
     $sqlArticulos = "CREATE TABLE IF NOT EXISTS articulos (
         id INT AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR(255) NOT NULL,
+        marca VARCHAR(255) NOT NULL,
+        descripcion VARCHAR(500) NOT NULL,
         precio DECIMAL(10,2) NOT NULL,
         fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
@@ -36,7 +38,7 @@ try {
 
     //echo "Configuración completada con éxito.";
 } catch (PDOException $e) {
-    die("Error en la conexión o configuración: " . $e->getMessage());
+    die ("Error en la conexión o configuración: " . $e->getMessage());
 }
 
 ?>
