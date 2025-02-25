@@ -90,10 +90,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $dni = "";
         $flagFormulario = 0;
     } else {
+        
+        $flagDni = 0;
+        
         if (!preg_match("/^[0-9]{8}$/", $_POST["Dni"])) {
             $errorDni = "CREDENCIALES INCORRECTAS, debe de contener los 8 numeros";
             $flagFormulario = 0;
-            $flagDni = 0;
+            $flagDni = 1;
         } else {
             $dni = $_POST["Dni"];
             foreach ($usuarios as $usuario) {
