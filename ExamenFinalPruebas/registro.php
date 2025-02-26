@@ -369,28 +369,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </form>
 
-<?php
+        <?php
+        if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
 
-if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
+            echo "<div id='datos'>";
+            echo "<h3>Datos registrados:</h3>";
 
-    echo "<div id='datos'>";
-    echo "<h3>Datos registrados:</h3>";
+            echo "Nombre de usuario: $nombreUsuario<br>";
+            echo "Contraseña: $contraseña<br>";
+            echo "Nombre: $nombre<br>";
+            echo "Apellidos: $apellidos<br>";
+            echo "Email: $email<br>";
+            echo "DNI: $dni<br>";
+            echo "Teléfono: $telefono<br>";
+            echo "Imagen: $nombreImagen<br>";
 
-    echo "Nombre de usuario: $nombreUsuario<br>";
-    echo "Contraseña: $contraseña<br>";
-    echo "Nombre: $nombre<br>";
-    echo "Apellidos: $apellidos<br>";
-    echo "Email: $email<br>";
-    echo "DNI: $dni<br>";
-    echo "Teléfono: $telefono<br>";
-    echo "Imagen: $nombreImagen<br>";
+            echo "</div>";
 
-    echo "</div>";
-
-   
-    echo "<p>Redirigiendo...</p>";
-}
-?>
+            echo "<p>Redirigiendo...</p>";
+        }
+        ?>
 
     </div>
 
