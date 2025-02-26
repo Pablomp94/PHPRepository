@@ -1,40 +1,46 @@
 <?php
-require_once 'config.php'; // Incluir la conexión
+require_once 'config.php'; // Incluir el archivo de configuración para la conexión a la base de datos
 
+// Variables para almacenar errores y estados
+$error = ""; // Mensaje de error si la autenticación falla
+$existeUsuario = FALSE; // FLAG para verificar si el usuario existe en la base de datos
+$contraseñaError = 0; // Contador de errores de contraseña (actualmente no usado)
 
-$error = "";
-$existeUsuario = FALSE;
-$contraseñaError = 0;
+$usuarioServer = ""; // Variable para almacenar el usuario en sesión (opcional, no utilizada)
+$contraseñaServer = ""; // Variable para almacenar la contraseña en sesión (opcional, no utilizada)
 
-$usuarioServer = "";
-$contraseñaServer = "";
-
-// Verificamos si se envió el formulario
+// Verificamos si se envió el formulario con el método POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
+    // Capturamos los datos del formulario
+    $nombreUsuario = $_POST['nombreUsuario']; // Nombre de usuario ingresado
+    $contraseña = $_POST['Contraseña']; // Contraseña ingresada
 
-    $nombreUsuario = $_POST['nombreUsuario'];
-    $contraseña = $_POST['Contraseña'];
+    // Consultamos la base de datos para verificar si el usuario existe
+    $sql = "SELECT * FROM usuarios WHERE nombreUsuario = ?"; // Consulta SQL
+    $stmt = $pdo->prepare($sql); // Preparamos la consulta 
+    $stmt->execute([$nombreUsuario]); // Ejecutamos la consulta con el nombre de usuario ingresado
+    
+    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC); // Obtenemos los resultados como un array asociativo
 
-    $sql = "SELECT * FROM usuarios WHERE nombreUsuario = '$nombreUsuario'";
-    $stmt = $pdo->query($sql);
-
-    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    // Iteramos sobre los resultados para verificar el usuario y la contraseña
     foreach ($usuarios as $usuario) {
-        if ($nombreUsuario == $usuario["nombreUsuario"]) {
-            $existeUsuario = TRUE;
+        if ($nombreUsuario == $usuario["nombreUsuario"]) { // Si el usuario existe en la base de datos
+            $existeUsuario = TRUE; // Marcamos que el usuario existe
 
-            if ((password_verify($contraseña, $usuario["Contraseña"]))) {
-                echo "<h1>Bienvenido/a " . $nombreUsuario . "</h1>";
-                header("Location: gestion_articulos.php?usuario=" . urlencode($nombreUsuario));
+            if ((password_verify($contraseña, $usuario["Contraseña"]))) { // Verificamos la contraseña encriptada
+                echo "<h1>Bienvenido/a " . $nombreUsuario . "</h1>"; // Mensaje de bienvenida
+                header("Location: gestion_articulos.php?usuario=" . urlencode($nombreUsuario)); // Redirigir al usuario a la gestión de artículos
+                exit(); // Detenemos la ejecución del script
             } else {
-                $error = "<h2 class = error>Contraseña incorrecta.</h2>";
+                $error = "<h2 class='error'>Contraseña incorrecta.</h2>"; // Mensaje de error si la contraseña es incorrecta
             }
         }
     }
 
+    // Si el usuario no existe en la base de datos
     if ($existeUsuario == FALSE) {
-        $error = "El usuario introducido no existe";
+        $error = "El usuario introducido no existe"; // Mensaje de error
     }
 }
 ?>
@@ -46,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <title>Iniciar Sesión</title>
     </head>
     <style>
-
         /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
@@ -66,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             margin: 20px;
         }
 
-        /* Formulario */
+        /* Estilos del formulario */
         form {
             background-color: #ffffff;
             padding: 30px;
@@ -84,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             color: #333;
         }
 
+        /* Campos de entrada */
         input[type="text"],
         input[type="password"] {
             width: 100%;
@@ -95,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-size: 16px;
         }
 
+        /* Botón de inicio de sesión */
         input[type="submit"],
         .registro-btn {
             background-color: #4CAF50;
@@ -117,6 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             background-color: darkgreen;
         }
 
+        /* Mensaje de error */
         .error {
             color: red;
             font-size: 16px;
@@ -136,7 +144,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <label for="password">Contraseña:</label>
             <input type="password" id="Contraseña" name="Contraseña">
 
+            <!-- Mostrar mensaje de error si existe -->
             <span class="error"><?php echo $error; ?></span>
+            
             <!-- Botón para enviar el formulario -->
             <input type="submit" value="Iniciar sesión">
         </form>

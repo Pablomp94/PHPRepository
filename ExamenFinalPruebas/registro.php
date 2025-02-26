@@ -1,100 +1,92 @@
+
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edit this template
--->
+<!-- Documento HTML para el formulario de registro -->
 
 <?php
-require_once 'config.php'; // Incluir la conexión
-
-
+require_once 'config.php'; // Incluir la conexión a la base de datos
+// Inicialización de variables para almacenar errores y datos del formulario
 $errornombreUsuario = $errorContraseña = $errorNombre = $errorApellidos = $errorEmail = $errorDni = $errorTelefono = $errorImagen = "";
 
 $nombreUsuario = $contraseña = $nombre = $apellidos = $email = $dni = $telefono = $imagen = "";
 
+// Flags de control para la validación del formulario
 $flagFormulario = 1;
 $flagDatos = 0;
 $flagImagen = 1;
 $flagDni = 0;
 
+// Verifica si la solicitud es de tipo POST (envío del formulario)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-
-
+    // Consulta para obtener todos los usuarios existentes
     $sql = "SELECT * FROM usuarios";
     $stmt = $pdo->query($sql);
-
     $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Validación del nombre de usuario
     if (empty($_POST["nombreUsuario"])) {
         $errornombreUsuario = "El nombre del usuario es obligatorio";
-        $nombreUsuario = "";
         $flagFormulario = 0;
     } else {
-
-        $nombreUsuario = ($_POST["nombreUsuario"]);
+        $nombreUsuario = $_POST["nombreUsuario"];
         foreach ($usuarios as $usuario) {
             if ($nombreUsuario == $usuario["nombreUsuario"]) {
                 $flagFormulario = 0;
-                $errornombreUsuario = "El nombre de usuario ya esta en uso";
+                $errornombreUsuario = "El nombre de usuario ya está en uso";
             }
         }
     }
 
+    // Validación de la contraseña
     if (empty($_POST["Contraseña"])) {
         $errorContraseña = "La contraseña es obligatoria";
-        $contraseña = "";
         $flagFormulario = 0;
     } else {
-        $contraseña =  password_hash($_POST["Contraseña"], PASSWORD_DEFAULT);;
+        $contraseña = password_hash($_POST["Contraseña"], PASSWORD_DEFAULT);
     }
 
+    // Validación del nombre
     if (empty($_POST["Nombre"])) {
         $errorNombre = "El nombre es obligatorio";
-        $nombre = "";
         $flagFormulario = 0;
     } else {
-        $nombre = ($_POST["Nombre"]);
+        $nombre = $_POST["Nombre"];
     }
 
-
+    // Validación de apellidos
     if (empty($_POST["Apellidos"])) {
-        $errorApellidos = "Los Apellidos son obligatorios";
-        $apellidos = "";
+        $errorApellidos = "Los apellidos son obligatorios";
         $flagFormulario = 0;
     } else {
-        $apellidos = ($_POST["Apellidos"]);
+        $apellidos = $_POST["Apellidos"];
     }
 
+    // Validación del correo electrónico con expresión regular
     if (empty($_POST["Email"])) {
         $errorEmail = "El Email es obligatorio";
-        $email = "";
         $flagFormulario = 0;
     } else {
-        if (!preg_match("/^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+)\.([a-zA-Z])$/", $_POST["Email"])) {
-            $errorEmail = "CREDENCIALES INCORRECTAS, -----@----.----";
+        if (!preg_match("/^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+)\\.([a-zA-Z]){2,}$/", $_POST["Email"])) {
+            $errorEmail = "CREDENCIALES INCORRECTAS, formato inválido";
             $flagFormulario = 0;
         } else {
             $email = $_POST["Email"];
             foreach ($usuarios as $usuario) {
                 if ($email == $usuario["Email"]) {
                     $flagFormulario = 0;
-                    $errorEmail = "El Email ya esta en uso";
+                    $errorEmail = "El Email ya está en uso";
                 }
             }
         }
     }
 
+    // Validación del DNI con verificación de letra correspondiente
     if (empty($_POST["Dni"])) {
         $errorDni = "El DNI es obligatorio";
-        $dni = "";
         $flagFormulario = 0;
     } else {
-        
-        $flagDni = 0;
-        
         if (!preg_match("/^[0-9]{8}$/", $_POST["Dni"])) {
-            $errorDni = "CREDENCIALES INCORRECTAS, debe de contener los 8 numeros";
+            $errorDni = "El DNI debe contener 8 números";
             $flagFormulario = 0;
             $flagDni = 1;
         } else {
@@ -103,87 +95,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($dni == $usuario["DNI"]) {
                     $flagFormulario = 0;
                     $flagDni = 1;
-                    $errorDni = "El DNI ya esta en uso";
+                    $errorDni = "El DNI ya está en uso";
                 }
             }
 
             if ($flagDni == 0) {
-
                 $dniArray = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"];
-
                 $numLetra = ($dni % 23);
-
-                $letra = $dniArray[($numLetra)];
-
-                $dni = ($dni . "" . $letra);
+                $letra = $dniArray[$numLetra];
+                $dni = $dni . $letra;
             }
         }
     }
 
+    // Validación del teléfono
     if (empty($_POST["Telefono"])) {
-        $errorTelefono = "El Telefono es obligatorio";
-        $telefono = "";
+        $errorTelefono = "El teléfono es obligatorio";
         $flagFormulario = 0;
     } else {
         if (!preg_match("/^[0-9]{9}$/", $_POST["Telefono"])) {
-            $errorTelefono = "Credenciales Incorrectas";
+            $errorTelefono = "Formato de teléfono incorrecto";
             $flagFormulario = 0;
         } else {
             $telefono = $_POST["Telefono"];
             foreach ($usuarios as $usuario) {
                 if ($telefono == $usuario["Telefono"]) {
                     $flagFormulario = 0;
-                    $errorTelefono = "El Telefono ya esta en uso";
+                    $errorTelefono = "El teléfono ya está en uso";
                 }
             }
         }
     }
 
-
+    // Validación y almacenamiento de imagen subida
     if (empty($_FILES["Imagen"]["name"])) {
         $errorImagen = "La imagen es obligatoria";
         $flagFormulario = 0;
     } else {
-
         $permitidos = ['image/jpeg', 'image/png'];
         $archivo = $_FILES['Imagen'];
 
-        if ($archivo['type'] == $permitidos[0]) {
-            $tip = ".jpeg";
-        } else if ($archivo['type'] == $permitidos[1]) {
-            $tip = ".png";
-        } else {
-            $errorImagen = "El tipo de fichero no esta permitido, pon jpg o png.";
+        if (!in_array($archivo['type'], $permitidos)) {
+            $errorImagen = "Formato de imagen no permitido (solo JPG o PNG)";
             $flagImagen = 0;
         }
+
         if ($flagImagen == 1) {
-            $nombreImagen = $dni . "-" . $telefono . "_" . $nombreUsuario . $tip;
-            $error = $archivo['error'];
-            $tmp_name = $archivo['tmp_name'];
-
-            $imagen = $nombre;
-
-            $rutaUno = "http://localhost/PHPRepository/ExamenFinalPruebas/uploads";
-            $rutaDos = "C:/xampp/htdocs/PHPRepository/ExamenFinalPruebas/uploads";
-            $destinoCarpeta = $rutaDos . "/" . $nombreImagen;
-            $destinoBase = $rutaUno . "/" . $nombreImagen;
-
-            move_uploaded_file($tmp_name, $destinoCarpeta);
+            $nombreImagen = $dni . "-" . $telefono . "_" . $nombreUsuario . ($archivo['type'] == 'image/jpeg' ? ".jpeg" : ".png");
+            $destinoCarpeta = "C:/xampp/htdocs/PHPRepository/ExamenFinalPruebas/uploads/" . $nombreImagen;
+            $destinoBase = "http://localhost/PHPRepository/ExamenFinalPruebas/uploads/" . $nombreImagen;
+            move_uploaded_file($archivo['tmp_name'], $destinoCarpeta);
         }
     }
 
-
-
-
-
-
+    // Inserción de datos en la base de datos si todas las validaciones pasan
     if ($flagFormulario == 1 && $flagImagen == 1) {
-
         $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$destinoBase')";
         $stmt = $pdo->query($sql);
-
         $flagDatos = 1;
-        header("refresh:3;url=login.php");
+        header("refresh:3;url=login.php"); // Redirección al login tras 3 segundos
     }
 }
 ?>
@@ -431,18 +401,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
 
         <?php
+        // Verifica si el formulario ha sido enviado mediante el método POST y si los datos han sido registrados correctamente
         if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
+            // Muestra un contenedor con los datos registrados del usuario
             echo "<div id='datos'>";
             echo "<h3>Datos registrados:</h3>";
+
+            // Imprime cada dato ingresado en el formulario
             echo "Nombre de usuario: $nombreUsuario<br>";
-            echo "Contraseña: $contraseña<br>";
+            echo "Contraseña: $contraseña<br>"; 
             echo "Nombre: $nombre<br>";
             echo "Apellidos: $apellidos<br>";
             echo "Email: $email<br>";
             echo "DNI: $dni<br>";
             echo "Teléfono: $telefono<br>";
             echo "Imagen: $nombreImagen<br>";
+
             echo "</div>";
+
+            // Mensaje de redirección para el usuario
             echo "<p>Redirigiendo...</p>";
         }
         ?>
