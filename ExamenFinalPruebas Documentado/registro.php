@@ -1,21 +1,37 @@
+
 <!DOCTYPE html>
+<!-- Documento HTML para el formulario de registro -->
+
 <?php
-require_once 'config.php';
+require_once 'config.php'; // Incluir la conexión a la base de datos mediante PDO
+// Inicialización de variables para manejar errores en la validación de datos
 $errornombreUsuario = $errorContraseña = $errorNombre = $errorApellidos = $errorEmail = $errorDni = $errorTelefono = $errorImagen = "";
+
+// Variables para almacenar los datos ingresados por el usuario
 $nombreUsuario = $contraseña = $nombre = $apellidos = $email = $dni = $telefono = $imagen = "";
-$flagFormulario = 1;
-$flagDatos = 0;
-$flagImagen = 1;
-$flagDni = 0;
+
+// Flags de control para la validación del formulario
+$flagFormulario = 1; // Indica si el formulario pasó todas las validaciones
+$flagDatos = 0; // Indica si se han insertado datos en la base de datos correctamente
+$flagImagen = 1; // Indica si la imagen es válida
+$flagDni = 0; // Indica si el DNI es válido
+// Verifica si la solicitud se ha realizado a través de un formulario enviado por POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Consulta para obtener todos los usuarios registrados en la base de datos
     $sql = "SELECT * FROM usuarios";
     $stmt = $pdo->query($sql);
-    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC); // Se obtiene un array asociativo con todos los usuarios
+
+    /*     * * VALIDACIONES ** */
+
+    // 1. Validación del nombre de usuario
     if (empty($_POST["nombreUsuario"])) {
         $errornombreUsuario = "El nombre del usuario es obligatorio";
         $flagFormulario = 0;
     } else {
         $nombreUsuario = $_POST["nombreUsuario"];
+        // Verifica si el nombre de usuario ya está en uso
         foreach ($usuarios as $usuario) {
             if ($nombreUsuario == $usuario["nombreUsuario"]) {
                 $flagFormulario = 0;
@@ -23,24 +39,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+
+    // 2. Validación de la contraseña
     if (empty($_POST["Contraseña"])) {
         $errorContraseña = "La contraseña es obligatoria";
         $flagFormulario = 0;
     } else {
+        // Se cifra la contraseña antes de almacenarla
         $contraseña = password_hash($_POST["Contraseña"], PASSWORD_DEFAULT);
     }
+
+    // 3. Validación del nombre
     if (empty($_POST["Nombre"])) {
         $errorNombre = "El nombre es obligatorio";
         $flagFormulario = 0;
     } else {
         $nombre = $_POST["Nombre"];
     }
+
+    // 4. Validación de los apellidos
     if (empty($_POST["Apellidos"])) {
         $errorApellidos = "Los apellidos son obligatorios";
         $flagFormulario = 0;
     } else {
         $apellidos = $_POST["Apellidos"];
     }
+
+    // 5. Validación del correo electrónico con una expresión regular
     if (empty($_POST["Email"])) {
         $errorEmail = "El Email es obligatorio";
         $flagFormulario = 0;
@@ -50,6 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $flagFormulario = 0;
         } else {
             $email = $_POST["Email"];
+            // Verifica si el email ya está registrado
             foreach ($usuarios as $usuario) {
                 if ($email == $usuario["Email"]) {
                     $flagFormulario = 0;
@@ -58,6 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+
+    // 6. Validación del DNI (Documento Nacional de Identidad)
     if (empty($_POST["Dni"])) {
         $errorDni = "El DNI es obligatorio";
         $flagFormulario = 0;
@@ -68,6 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $flagDni = 1;
         } else {
             $dni = $_POST["Dni"];
+            // Verifica si el DNI ya está registrado
             foreach ($usuarios as $usuario) {
                 if ($dni == $usuario["DNI"]) {
                     $flagFormulario = 0;
@@ -75,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $errorDni = "El DNI ya está en uso";
                 }
             }
+            // Si el DNI es válido, se calcula la letra correspondiente
             if ($flagDni == 0) {
                 $dniArray = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"];
                 $numLetra = ($dni % 23);
@@ -83,6 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+
+    // 7. Validación del teléfono
     if (empty($_POST["Telefono"])) {
         $errorTelefono = "El teléfono es obligatorio";
         $flagFormulario = 0;
@@ -92,6 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $flagFormulario = 0;
         } else {
             $telefono = $_POST["Telefono"];
+            // Verifica si el número de teléfono ya está registrado
             foreach ($usuarios as $usuario) {
                 if ($telefono == $usuario["Telefono"]) {
                     $flagFormulario = 0;
@@ -100,29 +133,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+
+    // 8. Validación y almacenamiento de imagen subida
     if (empty($_FILES["Imagen"]["name"])) {
         $errorImagen = "La imagen es obligatoria";
         $flagFormulario = 0;
     } else {
         $permitidos = ['image/jpeg', 'image/png'];
         $archivo = $_FILES['Imagen'];
+
         if (!in_array($archivo['type'], $permitidos)) {
             $errorImagen = "Formato de imagen no permitido (solo JPG o PNG)";
             $flagImagen = 0;
         }
+
         if ($flagImagen == 1) {
+            // Se genera un nombre de archivo único usando el DNI, teléfono y nombre de usuario
             $nombreImagen = $dni . "-" . $telefono . "_" . $nombreUsuario . ($archivo['type'] == 'image/jpeg' ? ".jpeg" : ".png");
             $destinoCarpeta = "C:/xampp/htdocs/PHPRepository/ExamenFinalPruebas/uploads/" . $nombreImagen;
             $destinoBase = "http://localhost/PHPRepository/ExamenFinalPruebas/uploads/" . $nombreImagen;
-            move_uploaded_file($archivo['tmp_name'], $destinoCarpeta);
+            move_uploaded_file($archivo['tmp_name'], $destinoCarpeta); // Se guarda la imagen en la carpeta del servidor
         }
     }
+
+    /*     * * INSERCIÓN DE DATOS EN LA BASE DE DATOS ** */
     if ($flagFormulario == 1 && $flagImagen == 1) {
         $sql = "INSERT INTO usuarios (nombreUsuario, Nombre, Apellidos, Email, DNI, Telefono, Contraseña, Imagen) 
                 VALUES ('$nombreUsuario', '$nombre', '$apellidos', '$email', '$dni', '$telefono', '$contraseña', '$destinoBase')";
-        $stmt = $pdo->query($sql);
+        $stmt = $pdo->query($sql); // Se ejecuta la consulta de inserción
         $flagDatos = 1;
-        header("refresh:3;url=login.php");
+        header("refresh:3;url=login.php"); // Redirección al login tras 3 segundos
     }
 }
 ?>
@@ -369,26 +409,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </form>
 
-        <?php
-        if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
+<?php
+// Verifica si el formulario ha sido enviado mediante el método POST y si los datos han sido registrados correctamente
+if (($_SERVER["REQUEST_METHOD"] == "POST") && ($flagDatos == 1)) {
+    // Muestra un contenedor con los datos registrados del usuario
+    echo "<div id='datos'>";
+    echo "<h3>Datos registrados:</h3>";
 
-            echo "<div id='datos'>";
-            echo "<h3>Datos registrados:</h3>";
+    // Imprime cada dato ingresado en el formulario
+    echo "Nombre de usuario: $nombreUsuario<br>";
+    echo "Contraseña: $contraseña<br>";
+    echo "Nombre: $nombre<br>";
+    echo "Apellidos: $apellidos<br>";
+    echo "Email: $email<br>";
+    echo "DNI: $dni<br>";
+    echo "Teléfono: $telefono<br>";
+    echo "Imagen: $nombreImagen<br>";
 
-            echo "Nombre de usuario: $nombreUsuario<br>";
-            echo "Contraseña: $contraseña<br>";
-            echo "Nombre: $nombre<br>";
-            echo "Apellidos: $apellidos<br>";
-            echo "Email: $email<br>";
-            echo "DNI: $dni<br>";
-            echo "Teléfono: $telefono<br>";
-            echo "Imagen: $nombreImagen<br>";
+    echo "</div>";
 
-            echo "</div>";
-
-            echo "<p>Redirigiendo...</p>";
-        }
-        ?>
+    // Mensaje de redirección para el usuario
+    echo "<p>Redirigiendo...</p>";
+}
+?>
 
     </div>
 

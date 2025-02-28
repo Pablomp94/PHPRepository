@@ -1,14 +1,17 @@
 <?php
 
+// Configuración de la base de datos
 $servername = "localhost:3306";
 $username = "root";
 $password = "";
 $dbname = "examen";
 
 try {
+    // Conexión a la base de datos con PDO
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Creación de la tabla usuarios si no existe
     $sqlUsuarios = "CREATE TABLE IF NOT EXISTS usuarios (
         nombreUsuario VARCHAR(100) NOT NULL,
         Nombre VARCHAR(100) NOT NULL,
@@ -22,6 +25,7 @@ try {
     )";
     $pdo->exec($sqlUsuarios);
 
+    // Creación de la tabla artículos si no existe
     $sqlArticulos = "CREATE TABLE IF NOT EXISTS articulos (
         id INT AUTO_INCREMENT PRIMARY KEY,
         nombre VARCHAR(255) NOT NULL,
@@ -32,6 +36,7 @@ try {
     )";
     $pdo->exec($sqlArticulos);
 
+    //echo "Configuración completada con éxito.";
 } catch (PDOException $e) {
     die ("Error en la conexión o configuración: " . $e->getMessage());
 }
