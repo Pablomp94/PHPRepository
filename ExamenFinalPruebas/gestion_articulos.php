@@ -89,7 +89,7 @@ $ultima_modificacion = isset($_COOKIE['ultima_modificacion']) ? $_COOKIE['ultima
                 <th>Marca</th>
                 <th>Descripción</th>
                 <th>Precio</th>
-                <th>Fecha Creación</th>
+                <th>Fecha Modificación</th>
             </tr>
             <?php foreach ($articulos as $articulo) : ?>
                 <tr>
